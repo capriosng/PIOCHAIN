@@ -7,50 +7,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400&display=swap" rel="stylesheet">
     
     <style>
-        /* RESET & DASAR */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            color: #ffffff;
-            font-family: 'Cormorant Garamond', serif;
-            background: url('background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            overflow-x: hidden;
+        body { 
+            background: url('background.jpg') no-repeat center center fixed; 
+            background-size: cover; 
+            font-family: 'Cormorant Garamond', serif; 
+            color: #fff; overflow-x: hidden; 
         }
-        html.unlocked { overflow-y: scroll; }
-
-        /* BINTANG & AYUNAN */
-        .starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(white, transparent 1px) 0 0 / 50px 50px; opacity: 0.3; pointer-events: none; }
         
+        /* 1. BINTANG & BINTANG JATUH */
+        .starry-sky { position: fixed; top:0; left:0; width:100%; height:100%; background: radial-gradient(white, transparent 1px) 0 0 / 50px 50px; opacity: 0.3; pointer-events: none; }
+        .shooting-star { position: absolute; width: 100px; height: 2px; background: linear-gradient(90deg, white, transparent); transform: rotate(-45deg); animation: shoot 5s infinite; }
+        @keyframes shoot { 0% { transform: translate(100vw, -100vh) rotate(-45deg); } 100% { transform: translate(-100vw, 100vh) rotate(-45deg); } }
+
+        /* 2. AYUNAN (POSISI PAS) */
         .tree-container { position: fixed; top: 0; right: 5%; width: 40vw; height: 100vh; z-index: 2; pointer-events: none; }
         .tree-swing { 
-            position: absolute; top: 28%; left: 35%; width: 2px; height: 220px; background: #ffffff; 
-            transform-origin: top center; animation: gentle-swing 5s ease-in-out infinite alternate;
+            position: absolute; top: 28%; left: 35%; width: 2px; height: 220px; background: #fff; 
+            transform-origin: top center; animation: gentle-swing 4s ease-in-out infinite alternate;
         }
-        .tree-swing::after { content: ''; position: absolute; bottom: 0; left: -20px; width: 45px; height: 8px; background: #dcd1c4; border-radius: 2px; }
-        @keyframes gentle-swing { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+        .tree-swing::after { content: ''; position: absolute; bottom: 0; left: -25px; width: 60px; height: 10px; background: #2a221b; border-radius: 4px; }
+        @keyframes gentle-swing { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
 
-        /* HERO & ALBUM */
-        .hero-section { height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; }
-        .hero-box, .photo-card { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); padding: 40px; border-radius: 15px; }
+        /* 3. DAUN SAKURA JATUH */
+        .sakura { position: fixed; color: #ffb6c1; font-size: 20px; animation: fall linear infinite; pointer-events: none; }
+        @keyframes fall { 0% { top: -10%; transform: rotate(0deg); } 100% { top: 110%; transform: rotate(360deg); } }
+
+        /* 4. LAYAR UTAMA & ALBUM */
+        .hero-section { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero-box, .photo-card { background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); padding: 50px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
         .album-container { display: none; }
         .album-container.active { display: block; }
-        .album-page { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 50px 20px; }
+        .album-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 50px 20px; }
         .photo-card { width: 100%; max-width: 500px; text-align: center; }
-        .photo-card img { width: 100%; height: 300px; object-fit: cover; margin-bottom: 20px; border: 3px solid #fff; }
-        
-        .explore-btn { padding: 15px 30px; cursor: pointer; background: #fff; border: none; font-weight: bold; }
+        .photo-card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 20px; border-radius: 10px; }
+        .explore-btn { padding: 15px 40px; cursor: pointer; background: #fff; border: none; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <div class="starry-sky"></div>
+    <div class="shooting-star" style="top: 10%; left: 80%;"></div>
     <div class="tree-container"><div class="tree-swing"></div></div>
 
     <section class="hero-section" id="hero">
         <div class="hero-box">
             <h1>Kisah Perjalanan Romantis</h1>
             <p>Setiap lembar foto menyimpan detak waktu saat dunia kita mulai menyatu.</p>
-            <button class="explore-btn" onclick="startJourney()">JELAJAHI CERITA</button>
+            <br>
+            <button class="explore-btn" onclick="startJourney()">Jelajahi Cerita</button>
         </div>
     </section>
 
@@ -72,6 +77,15 @@
             document.getElementById("hero").style.display = "none";
             document.getElementById("albumView").classList.add('active');
             document.documentElement.classList.add('unlocked');
+            setInterval(createSakura, 800);
+        }
+        function createSakura() {
+            const s = document.createElement('div');
+            s.innerHTML = '🌸'; s.className = 'sakura';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = Math.random() * 5 + 5 + 's';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 10000);
         }
     </script>
 </body>

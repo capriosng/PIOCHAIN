@@ -16,7 +16,6 @@
         }
 
         html {
-            /* Mengunci halaman pas di tengah layar saat di-scroll */
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
         }
@@ -80,6 +79,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            
+            /* Menghubungkan scroll timeline untuk animasi transisi halus */
+            view-timeline-name: --section;
+            view-timeline-axis: block;
         }
 
         /* Cover Utama Penuh Satu Halaman */
@@ -101,7 +104,7 @@
             padding: 20px;
         }
 
-        /* Kotak Teks Efek Kaca Biru (Blue Glassmorphism) */
+        /* Kotak Teks Efek Kaca Biru (Blue Glassmorphism) + Animasi Scroll */
         .content-box {
             background: rgba(10, 25, 47, 0.55);
             backdrop-filter: blur(14px) brightness(95%);
@@ -112,7 +115,11 @@
             max-width: 680px;
             text-align: center;
             box-shadow: 0 20px 50px rgba(2, 12, 27, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1.5s ease-in-out;
+            
+            /* === ANIMASI INTERAKTIF PERGANTIAN HALAMAN === */
+            animation: scrollReveal linear both;
+            animation-timeline: --section;
+            animation-range: entry 10% cover 40%;
         }
 
         /* Judul Perjalanan Besar */
@@ -176,10 +183,20 @@
             color: rgba(173, 216, 230, 0.4);
         }
 
-        /* Keyframes Animasi */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        /* ==========================================
+           4. TIMELINE ANIMASI BLUR HALUS (SCROLL REVEAL)
+           ========================================== */
+        @keyframes scrollReveal {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.95);
+                filter: blur(15px); /* Efek blur tebal saat tersembunyi */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px); /* Menjadi jernih sempurna saat berada di tengah layar */
+            }
         }
     </style>
 </head>
@@ -194,7 +211,8 @@
     <!-- Halaman Pembuka / Hero (Judul Besar 1 Halaman Lengkap) -->
     <section class="page-section hero-section" id="hero">
         <div class="blur-overlay">
-            <div class="content-box">
+            <!-- Kotak ini dikecualikan dari animasi gulir agar langsung terbaca di awal -->
+            <div class="content-box" style="animation: none;">
                 <h1>Di Bawah Langit Malam yang Sama:<br>Cerita Piooo & Chainnnn</h1>
                 <p class="caption">Dari tatapan pertama menuju langkah dan petualangan bersama.</p>
                 <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
@@ -304,7 +322,7 @@
     </section>
 
     <!-- ==========================================
-       4. JAVASCRIPT KONTROL JELAJAHI & MUSIK
+       5. JAVASCRIPT KONTROL JELAJAHI & MUSIK
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");

@@ -23,6 +23,7 @@
             --text-muted: #dcd1c4;
             --bg-card: rgba(255, 255, 255, 0.94);
             --text-card: #2a221b;
+            --tree-color: #0b0716; /* Warna siluet pohon gelap misterius */
         }
 
         html {
@@ -71,7 +72,6 @@
             100% { opacity: 0.8; }
         }
 
-        /* Rembulan Purnama */
         body::before {
             content: '';
             position: fixed;
@@ -86,7 +86,6 @@
             pointer-events: none;
         }
 
-        /* Bintang Jatuh */
         .shooting-stars {
             position: fixed;
             top: 0;
@@ -128,50 +127,92 @@
         }
 
         /* ==========================================
-           3. STRUKTUR POHON LEBAT DENGAN DENYUT ANGIN & AYUNAN
+           3. STRUKTUR POHON LEBAT 100% CSS MURNI
            ========================================== */
         .tree-container {
             position: fixed;
-            top: -5vh;
-            left: -10vw;
-            width: 75vw;
-            height: 110vh;
+            bottom: -5vh;
+            left: -5vw;
+            width: 50vw;
+            height: 95vh;
             z-index: 2;
             pointer-events: none;
-            transform-origin: left bottom;
-            animation: tree-sway 10s ease-in-out infinite alternate;
         }
 
-        /* POHON BESAR LEBAT DENGAN EFEK ANGIN TERPA */
-        .main-tree-img {
+        /* Batang Pohon Utama */
+        .trunk {
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 60px;
+            height: 65%;
+            background: var(--tree-color);
+            border-radius: 0 100% 0 0;
+            transform-origin: bottom center;
+            animation: trunk-sway 8s ease-in-out infinite alternate;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* Dahan Besar Kanan */
+        .branch-main {
+            position: absolute;
+            top: 20%;
+            left: 40%;
+            width: 250px;
+            height: 40px;
+            background: var(--tree-color);
+            transform: rotate(-25deg);
+            transform-origin: left center;
+            border-radius: 20px;
+        }
+
+        /* Lapisan Daun-Daun Lebat Termakan Angin Malam */
+        .foliage-group {
+            position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.9)) brightness(0.1);
-            animation: leaf-flutter 4s ease-in-out infinite alternate;
+            top: -20vh;
+            left: -5vw;
         }
 
-        @keyframes tree-sway {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(1.5deg) scale(1.01); }
+        .leaves {
+            position: absolute;
+            background: var(--tree-color);
+            border-radius: 50%;
+            filter: blur(2px) drop-shadow(0 15px 30px rgba(0,0,0,0.8));
+            transform-origin: center center;
         }
 
-        @keyframes leaf-flutter {
-            0% { transform: scaleX(1) skewX(0deg); }
-            100% { transform: scaleX(1.02) skewX(1.5deg); }
+        /* Variasi Ukuran Rumpun Daun Membentuk Pohon Lebat */
+        .leaves-1 { width: 320px; height: 260px; top: 15%; left: 5%; animation: leaf-shake 4.5s ease-in-out infinite alternate; }
+        .leaves-2 { width: 280px; height: 220px; top: 8%; left: 25%; animation: leaf-shake 3.8s ease-in-out infinite alternate -1s; }
+        .leaves-3 { width: 340px; height: 250px; top: 22%; left: 35%; animation: leaf-shake 5.2s ease-in-out infinite alternate -2s; }
+        .leaves-4 { width: 200px; height: 180px; top: 40%; left: 50%; animation: leaf-shake 4s ease-in-out infinite alternate -0.5s; }
+        .leaves-5 { width: 220px; height: 170px; top: 35%; left: 15%; animation: leaf-shake 4.8s ease-in-out infinite alternate -1.5s; }
+
+        /* Animasi Ayunan Batang & Ranting */
+        @keyframes trunk-sway {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1.2deg); }
         }
 
-        /* AYUNAN YANG TERGANTUNG DI POHON */
+        /* Animasi Kelompok Daun Menggelembung/Bergoyang Akibat Terpaan Angin */
+        @keyframes leaf-shake {
+            0% { transform: scale(1) translate(0, 0) skewX(0deg); }
+            100% { transform: scale(1.04) translate(7px, -4px) skewX(2deg); }
+        }
+
+        /* AYUNAN YANG TERGANTUNG DI DAHAN POHON CSS */
         .tree-swing {
             position: absolute;
-            top: 32%;      
-            left: 55%;     
-            width: 60px;
-            height: 240px;
-            border-left: 2px solid #08050c;
-            border-right: 2px solid #08050c;
+            top: 30px;      
+            left: 170px;     
+            width: 50px;
+            height: 250px;
+            border-left: 2px solid var(--tree-color);
+            border-right: 2px solid var(--tree-color);
             transform-origin: top center;
-            animation: gentle-swing 6s ease-in-out infinite alternate;
+            animation: gentle-swing 5s ease-in-out infinite alternate;
         }
 
         .tree-swing::after {
@@ -179,16 +220,16 @@
             position: absolute;
             bottom: 0;
             left: -10px;
-            width: 80px;
+            width: 70px;
             height: 8px;
-            background: #08050c;
+            background: var(--tree-color);
             border-radius: 2px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.7);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.6);
         }
 
         @keyframes gentle-swing {
-            0% { transform: rotate(-3.5deg); }
-            100% { transform: rotate(3.5deg); }
+            0% { transform: rotate(-4deg); }
+            100% { transform: rotate(4deg); }
         }
 
         /* ==========================================
@@ -207,10 +248,10 @@
 
         .sakura {
             position: absolute;
-            color: rgba(255, 182, 193, 0.7);
+            color: rgba(255, 182, 193, 0.75);
             line-height: 1;
             user-select: none;
-            text-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+            text-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
             animation: fall linear infinite, wind-sway ease-in-out infinite;
         }
 
@@ -223,8 +264,8 @@
 
         @keyframes wind-sway {
             0% { transform: translateX(0) rotate(0deg); }
-            50% { transform: translateX(100px) rotate(180deg); }
-            100% { transform: translateX(180px) rotate(360deg); }
+            50% { transform: translateX(120px) rotate(180deg); }
+            100% { transform: translateX(200px) rotate(360deg); }
         }
 
         /* ==========================================
@@ -287,7 +328,6 @@
             box-shadow: 0 8px 20px rgba(255, 249, 242, 0.25);
         }
 
-        /* Kontainer Galeri Foto */
         .album-container {
             display: none;
             opacity: 0;
@@ -380,14 +420,19 @@
         @media (max-width: 768px) {
             .album-page { height: auto; min-height: 100vh; padding: 60px 20px; }
             .photo-card img { height: 280px; }
-            .tree-container { width: 110vw; left: -20vw; top: 0; }
-            .tree-swing { left: 62%; top: 30%; height: 160px; }
+            .tree-container { width: 90vw; bottom: -5vh; left: -15vw; }
+            .trunk { height: 50%; width: 45px; }
+            .branch-main { left: 35%; width: 160px; }
+            .leaves-1 { width: 200px; height: 160px; }
+            .leaves-2 { width: 180px; height: 140px; }
+            .leaves-3 { width: 220px; height: 170px; }
+            .tree-swing { left: 110px; height: 180px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Lapisan Langit Malam (Bintang-Bintang) -->
+    <!-- Lapisan Langit Malam -->
     <div class="starry-sky"></div>
 
     <!-- Efek Bintang Jatuh -->
@@ -397,13 +442,25 @@
         <div class="shooting-star"></div>
     </div>
 
-    <!-- Wadah Pohon Lebat & Ayunan (Menggunakan Gambar Utama) -->
+    <!-- ==========================================
+       POHON LEBAT & AYUNAN (100% CSS MURNI)
+       ========================================== -->
     <div class="tree-container">
-        <img src="pohon.png" alt="Pohon Lebat" class="main-tree-img">
-        <div class="tree-swing"></div>
+        <div class="trunk">
+            <div class="branch-main">
+                <div class="tree-swing"></div>
+            </div>
+        </div>
+        <div class="foliage-group">
+            <div class="leaves leaves-1"></div>
+            <div class="leaves leaves-2"></div>
+            <div class="leaves leaves-3"></div>
+            <div class="leaves leaves-4"></div>
+            <div class="leaves leaves-5"></div>
+        </div>
     </div>
 
-    <!-- Wadah Angin Daun Sakura Berguguran -->
+    <!-- Wadah Hujan Angin Daun Sakura Berguguran -->
     <div id="sakura-particles"></div>
 
     <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
@@ -554,9 +611,7 @@
         </div>
     </div>
 
-    <!-- ==========================================
-       6. LOGIKA JS ANIMASI INTERAKTIF
-       ========================================== -->
+    <!-- LOGIKA JS ANIMASI INTERAKTIF -->
     <script>
         var myAudio = document.getElementById("bgMusic");
         var album = document.getElementById("albumView");

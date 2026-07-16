@@ -1181,23 +1181,29 @@
     hero.style.opacity = "0";
     hero.style.transform = "scale(0.97)";
     
-    // Pastikan audio siap diputar
-    myAudio.load(); 
-    
-    // Gunakan promise untuk menangkap kegagalan autoplay
+    // Pastikan audio mencoba untuk diputar segera
     var playPromise = myAudio.play();
 
+    // Browser modern mengembalikan Promise untuk fungsi .play()
     if (playPromise !== undefined) {
         playPromise.then(_ => {
             // Autoplay berhasil!
-            console.log("Audio berhasil diputar.");
+            console.log("Musik mulai diputar");
         })
         .catch(error => {
-            // Autoplay gagal. Mungkin pengguna harus berinteraksi lagi.
-            console.log("Autoplay dicegat oleh browser:", error);
-            // Anda bisa menampilkan tombol "Play Musik" jika gagal di sini
+            // Jika gagal, mungkin perlu interaksi lebih lanjut atau file tidak ditemukan
+            console.log("Autoplay dicegat browser:", error);
+            alert("Klik di mana saja untuk mengaktifkan musik.");
         });
     }
+    
+    setTimeout(function() {
+        hero.remove(); 
+        album.classList.add('active');
+        document.documentElement.classList.add('unlocked');
+        handleScrollAnimation();
+    }, 700);
+}
     
     setTimeout(function() {
         hero.remove(); 

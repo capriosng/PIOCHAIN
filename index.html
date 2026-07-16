@@ -39,15 +39,14 @@
             font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            /* Background gradasi malam gelap langsung aktif */
             background: radial-gradient(circle at 75% 25%, #2a1f3d 0%, #110d22 60%, #05040a 100%);
             background-attachment: fixed;
         }
 
         /* ==========================================
-           2. LANGIT BERBINTANG & BINTANG JATUH
+           2. LANGIT BERBINTANG & BINTANG JATUH (LANGSUNG AKTIF)
            ========================================== */
-        
-        /* Efek Taburan Bintang di Langit */
         .starry-sky {
             position: fixed;
             top: 0;
@@ -62,7 +61,6 @@
                 radial-gradient(1.5px 1.5px at 130px 80px, #fff, transparent),
                 radial-gradient(2px 2px at 190px 150px, #eee, transparent);
             background-size: 300px 300px;
-            /* Efek kelap-kelip halus */
             animation: stars-twinkle 4s ease-in-out infinite alternate;
             opacity: 0.6;
             z-index: 0;
@@ -89,7 +87,7 @@
             pointer-events: none;
         }
 
-        /* Container Bintang Jatuh */
+        /* Bintang Jatuh */
         .shooting-stars {
             position: fixed;
             top: 0;
@@ -131,10 +129,8 @@
         }
 
         /* ==========================================
-           3. VISUAL POHON BERGOYANG & AYUNAN
+           3. VISUAL POHON BERGOYANG & AYUNAN (LANGSUNG AKTIF)
            ========================================== */
-        
-        /* Batang Utama & Ranting Kiri Menjalar ke Tengah */
         .sakura-tree-back {
             position: fixed;
             top: -10%;
@@ -145,15 +141,11 @@
             z-index: 2;
             opacity: 0.9;
             background-image: 
-                /* Efek Daun Lebat Berlapis */
                 radial-gradient(circle at 55% 35%, #462237 0%, transparent 60%),
                 radial-gradient(circle at 40% 25%, #582b44 0%, transparent 55%),
                 radial-gradient(circle at 30% 40%, #351627 0%, transparent 65%),
-                /* Struktur Batang Kayu */
                 linear-gradient(38deg, transparent 42%, #120c17 43%, #0a060f 47%, transparent 48%);
             filter: drop-shadow(0 0 25px rgba(0,0,0,0.8));
-            
-            /* Animasi pohon bergoyang tertiup angin malam */
             transform-origin: left bottom;
             animation: tree-sway-wind 8s ease-in-out infinite alternate;
         }
@@ -163,7 +155,6 @@
             100% { transform: rotate(1deg) scale(1.02); }
         }
 
-        /* Ayunan Gantung Tertiup Angin */
         .tree-swing {
             position: fixed;
             top: 22%;
@@ -175,7 +166,6 @@
             z-index: 3;
             pointer-events: none;
             transform-origin: top center;
-            /* Efek ayunan sinkron dengan angin */
             animation: gentle-swing 7s ease-in-out infinite alternate;
         }
 
@@ -197,7 +187,7 @@
         }
 
         /* ==========================================
-           4. PARTIKEL ANGIN & HUJAN SAKURA
+           4. PARTIKEL DAUN SAKURA
            ========================================== */
         #sakura-particles {
             position: fixed;
@@ -208,7 +198,6 @@
             pointer-events: none;
             z-index: 50;
             overflow: hidden;
-            display: none;
         }
 
         .sakura {
@@ -217,7 +206,6 @@
             line-height: 1;
             user-select: none;
             text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
-            /* Gabungan gugur ke bawah dan terdorong angin ke kanan */
             animation: fall linear infinite, wind-sway ease-in-out infinite;
         }
 
@@ -394,22 +382,22 @@
 </head>
 <body>
 
-    <!-- Lapisan Langit Malam Studio (Bintang-Bintang) -->
+    <!-- Lapisan Langit Malam (Bintang-Bintang) -->
     <div class="starry-sky"></div>
 
-    <!-- Sistem Efek Bintang Jatuh Misterius -->
+    <!-- Efek Bintang Jatuh -->
     <div class="shooting-stars">
         <div class="shooting-star"></div>
         <div class="shooting-star"></div>
         <div class="shooting-star"></div>
     </div>
 
-    <!-- Pohon Sakura Dengan Cabang Kiri Melengkung Ketengah & Ayunan -->
+    <!-- Pohon Sakura Bergoyangnya Angin & Ayunan -->
     <div class="sakura-tree-back">
         <div class="tree-swing"></div>
     </div>
 
-    <!-- Kanvas Angin Daun Sakura Berguguran -->
+    <!-- Wadah Angin Daun Sakura Berguguran -->
     <div id="sakura-particles"></div>
 
     <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
@@ -569,6 +557,11 @@
         var hero = document.getElementById("hero");
         var particleContainer = document.getElementById("sakura-particles");
 
+        // Daun sakura langsung berguguran sejak pertama kali link dibuka
+        window.addEventListener('DOMContentLoaded', function() {
+            createSakuraWind();
+        });
+
         function startJourney() {
             hero.style.opacity = "0";
             hero.style.transform = "scale(0.97)";
@@ -576,12 +569,9 @@
             setTimeout(function() {
                 hero.remove(); 
                 album.classList.add('active');
-                particleContainer.style.display = "block";
                 document.documentElement.classList.add('unlocked');
                 
                 myAudio.play().catch(err => console.log("Audio siap berjalan."));
-                
-                createSakuraWind();
                 handleScrollAnimation();
             }, 700);
         }
@@ -597,11 +587,9 @@
                 petal.classList.add('sakura');
                 petal.innerText = sakuraStyles[Math.floor(Math.random() * sakuraStyles.length)];
                 
-                // Mulai dari kiri atas (area sekitar dahan pohon lebat)
                 petal.style.left = Math.random() * 60 + 'vw';
                 
                 const fallDuration = Math.random() * 6 + 5; 
-                // Mengontrol kecepatan jatuh dan sapuan arah angin secara dinamis
                 petal.style.animationDuration = `${fallDuration}s, ${Math.random() * 3 + 4}s`;
                 
                 const size = Math.random() * 14 + 12;
@@ -616,539 +604,6 @@
             }, 100); 
         }
 
-        function handleScrollAnimation() {
-            var pages = document.querySelectorAll('.album-page');
-            var triggerBottom = window.innerHeight * 0.85;
-
-            pages.forEach(page => {
-                var pageTop = page.getBoundingClientRect().top;
-                if (pageTop < triggerBottom) {
-                    page.classList.add('visible');
-                } else {
-                    page.classList.remove('visible');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', handleScrollAnimation);
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisah Perjalanan Romantis</title>
-    <!-- Meload Font Premium dari Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ==========================================
-           1. RESET & VARIABEL WARNA ELEGAN
-           ========================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-album: #f6f1eb;      /* Kertas mewah hangat */
-            --bg-card: #ffffff;       /* Putih bersih galeri */
-            --text-main: #2a221b;     /* Hitam kopi hangat */
-            --text-muted: #a3917f;    /* Cokelat emas pudar */
-            --border-color: #e8dfd3;  /* Batas kertas */
-        }
-
-        html {
-            overflow: hidden;
-            scroll-behavior: smooth;
-            background-color: var(--bg-album);
-        }
-
-        html.unlocked {
-            overflow-y: scroll;
-        }
-
-        body {
-            color: var(--text-main);
-            font-family: 'Cormorant Garamond', serif;
-            overflow-x: hidden;
-            background-color: var(--bg-album);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ==========================================
-           2. EFEK AMBIENCE CINTA (PARTIKEL LEMBUT)
-           ========================================== */
-        #heart-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none; /* Supaya tidak mengganggu klik/scroll */
-            z-index: 50;
-            overflow: hidden;
-            display: none;
-        }
-
-        .particle {
-            position: absolute;
-            color: rgba(194, 155, 133, 0.25); /* Warna kelopak rose gold transparan */
-            font-size: 14px;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-20px) rotate(0deg) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% {
-                transform: translateY(105vh) rotate(360deg) translateX(50px);
-                opacity: 0;
-            }
-        }
-
-        /* ==========================================
-           3. FOTO 1 - HERO SCREEN
-           ========================================== */
-        .hero-section {
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(rgba(246, 241, 235, 0.65), rgba(246, 241, 235, 0.65)), url('foto1.jpg') no-repeat center center/cover;
-            text-align: center;
-            padding: 30px;
-            z-index: 100;
-            position: relative;
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .hero-box {
-            max-width: 700px;
-            background: rgba(255, 255, 255, 0.4);
-            padding: 60px 40px;
-            border-radius: 2px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 50px rgba(44, 36, 30, 0.03);
-        }
-
-        .hero-box h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
-            font-weight: 400;
-            font-style: italic;
-            margin-bottom: 20px;
-            color: var(--text-main);
-            line-height: 1.2;
-        }
-
-        .hero-box p {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            margin-bottom: 40px;
-            letter-spacing: 0.5px;
-        }
-
-        .explore-btn {
-            font-family: 'Work Sans', sans-serif;
-            background: var(--text-main);
-            color: #fff;
-            border: none;
-            padding: 16px 45px;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .explore-btn:hover {
-            background: #45382f;
-            box-shadow: 0 10px 25px rgba(44, 36, 30, 0.15);
-        }
-
-        /* ==========================================
-           4. LAYOUT PER LAYAR & BINGKAI FOTO ELEGAN
-           ========================================== */
-        .album-container {
-            display: none;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .album-container.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .album-page {
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-            background: var(--bg-album);
-            position: relative;
-        }
-
-        /* Garis batas pembatas buku bergaya majalah */
-        .album-page::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 15%;
-            width: 70%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--border-color), transparent);
-        }
-
-        /* BINGKAI FOTO FINE-ART / PREMIUM GALLERY FRAME */
-        .photo-card {
-            background: var(--bg-card);
-            width: 100%;
-            max-width: 580px;
-            padding: 24px 24px 45px 24px;
-            
-            /* Double Border Style (Kemewahan Klasik) */
-            border: 1px solid rgba(163, 145, 127, 0.3);
-            outline: 12px solid var(--bg-card);
-            outline-offset: -24px;
-            
-            /* Bayangan Lembut Seni Kedalaman */
-            box-shadow: 0 30px 70px rgba(44, 36, 30, 0.08), 
-                        0 10px 20px rgba(0, 0, 0, 0.02);
-            
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            
-            /* Konfigurasi Awal Efek Blur & Transisi Halus */
-            opacity: 0;
-            filter: blur(20px);
-            transform: translateY(50px) scale(0.96);
-            transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        filter 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Trigger ketika halaman di-scroll mendekat */
-        .album-page.visible .photo-card {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0) scale(1);
-        }
-
-        /* Frame Foto Dalam */
-        .image-wrapper {
-            position: relative;
-            padding: 12px;
-            background: #fafaf9;
-            border: 1px solid #f0eae1;
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            display: block;
-            filter: sepia(4%) contrast(101%);
-        }
-
-        /* Nomor Lembar */
-        .photo-number {
-            font-family: 'Work Sans', sans-serif;
-            display: block;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
-
-        /* Teks Kisah */
-        .story-text {
-            margin-top: 35px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.35rem;
-            font-weight: 400;
-            font-style: italic;
-            color: var(--text-main);
-            line-height: 1.65;
-            padding: 0 25px;
-        }
-
-        /* Dekorasi Simbol Cinta Minimalis di Akhir Cerita */
-        .story-text::after {
-            content: "❦";
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 20px;
-            opacity: 0.5;
-        }
-
-        /* Penutup */
-        .album-footer {
-            font-family: 'Work Sans', sans-serif;
-            background: var(--bg-album);
-            text-align: center;
-            padding: 120px 20px;
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        /* Responsive Ponsel */
-        @media (max-width: 768px) {
-            .album-page {
-                height: auto;
-                min-height: 100vh;
-                padding: 80px 20px;
-            }
-            .photo-card {
-                padding: 16px 16px 35px 16px;
-                outline: 8px solid var(--bg-card);
-                outline-offset: -16px;
-            }
-            .photo-card img {
-                height: 300px;
-            }
-            .story-text {
-                font-size: 1.2rem;
-                padding: 0 5px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Wadah Efek Cinta (Kelopak/Hati Berjatuhan Transparan) -->
-    <div id="heart-particles"></div>
-
-    <!-- Musik Latar Otomatis Belakang Layar -->
-    <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
-
-    <!-- HALAMAN PEMBUKA -->
-    <section class="hero-section" id="hero">
-        <div class="hero-box">
-            <h1>Kisah Perjalanan Romantis</h1>
-            <p>Setiap lembar foto menyimpan detak waktu saat dunia kita mulai menyatu.</p>
-            <button class="explore-btn" onclick="startJourney()">Jelajahi Cerita</button>
-        </div>
-    </section>
-
-    <!-- KONTENER UTAMA ALBUM FOTO -->
-    <div class="album-container" id="albumView">
-
-        <!-- HALAMAN 1 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Pertama —</span>
-                    <div class="image-wrapper">
-                        <img src="foto2.jpg" alt="Pertemuan Pertama">
-                    </div>
-                </div>
-                <div class="story-text">"Semuanya dimulai dari pertemuan yang tak pernah diduga. Hari di mana semesta mempertemukan tatap mata kita untuk pertama kali."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 2 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Kedua —</span>
-                    <div class="image-wrapper">
-                        <img src="foto3.jpg" alt="Senyuman Canggung">
-                    </div>
-                </div>
-                <div class="story-text">"Senyuman canggung darimu waktu itu diam-diam mencuri seluruh perhatianku, membuat hari biasa terasa sangat istimewa."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 3 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Ketiga —</span>
-                    <div class="image-wrapper">
-                        <img src="foto4.jpg" alt="Mulai Chatting">
-                    </div>
-                </div>
-                <div class="story-text">"Lewat deretan pesan di setiap malam, kita mulai saling bertukar cerita. Menyadari ada kenyamanan baru yang pelan-pelan tumbuh."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 4 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Keempat —</span>
-                    <div class="image-wrapper">
-                        <img src="foto5.jpg" alt="Memutuskan Bertemu">
-                    </div>
-                </div>
-                <div class="story-text">"Hari di mana keberanian membimbing kita untuk melangkah keluar dari balik layar handphone, merencanakan pertemuan berdua."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 5 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Kelima —</span>
-                    <div class="image-wrapper">
-                        <img src="foto6.jpg" alt="Kencan Pertama">
-                    </div>
-                </div>
-                <div class="story-text">"Kencan pertama kita dipenuhi tawa lepas tanpa beban. Waktu seolah berputar begitu cepat saat aku berada di dekatmu."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 6 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Keenam —</span>
-                    <div class="image-wrapper">
-                        <img src="foto7.jpg" alt="Satu Frekuensi">
-                    </div>
-                </div>
-                <div class="story-text">"Di momen inilah kita sadar, kita berjalan di atas satu frekuensi yang sama. Menemukan rumah di dalam diri satu sama lain."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 7 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Ketujuh —</span>
-                    <div class="image-wrapper">
-                        <img src="foto8.jpg" alt="Tempat Bersandar">
-                    </div>
-                </div>
-                <div class="story-text">"Bukan sekadar tentang bersenang-senang, kamu hadir menjadi sandaran paling teduh di kala dunia luar terasa melelahkan."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 8 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Kedelapan —</span>
-                    <div class="image-wrapper">
-                        <img src="foto9.jpg" alt="Petualangan Baru">
-                    </div>
-                </div>
-                <div class="story-text">"Langkah awal untuk memulai petualangan baru berdua. Menjelajahi tempat-tempat baru dan menimbun memori indah bersama."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 9 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Kesembilan —</span>
-                    <div class="image-wrapper">
-                        <img src="foto10.jpg" alt="Mengunci Komitmen">
-                    </div>
-                </div>
-                <div class="story-text">"Mengunci komitmen dan janji suci di hati masing-masing, siap menghadapi hari esok dengan saling menggenggam erat."</div>
-            </div>
-        </section>
-
-        <!-- HALAMAN 10 -->
-        <section class="album-page">
-            <div class="photo-card">
-                <div>
-                    <span class="photo-number">— Lembar Terakhir —</span>
-                    <div class="image-wrapper">
-                        <img src="foto11.jpg" alt="Masa Depan">
-                    </div>
-                </div>
-                <div class="story-text">"Makan malam privat yang manis, merayakan perjalanan indah yang sudah kita lalui sembari menatap cerahnya masa depan kita berdua."</div>
-            </div>
-        </section>
-
-        <!-- BAGIAN PENUTUP -->
-        <div class="album-footer">
-            Dibuat dengan Seluruh Jiwa & Cinta
-        </div>
-    </div>
-
-    <!-- ==========================================
-       5. JAVASCRIPT ANIMASI & EFEK CINTA
-       ========================================== -->
-    <script>
-        var myAudio = document.getElementById("bgMusic");
-        var album = document.getElementById("albumView");
-        var hero = document.getElementById("hero");
-        var particleContainer = document.getElementById("heart-particles");
-
-        function startJourney() {
-            // Animasi memudar halus untuk Hero Section
-            hero.style.opacity = "0";
-            hero.style.transform = "scale(0.98)";
-            
-            setTimeout(function() {
-                hero.remove(); 
-                
-                // Tampilkan Album & Aktifkan Efek Partikel Cinta
-                album.classList.add('active');
-                particleContainer.style.display = "block";
-                document.documentElement.classList.add('unlocked');
-                
-                // Musik Otomatis Latar Belakang
-                myAudio.play().catch(err => console.log("Musik berjalan aktif."));
-                
-                createParticles(); // Mulai memproduksi efek kelopak cinta
-                handleScrollAnimation();
-            }, 700);
-        }
-
-        // GENERATOR EFEK CINTA (Kelopak Bunga / Simbol Hati Mengambang Lembut)
-        function createParticles() {
-            const shapes = ['🌸', '♥', '❀', '♡'];
-            setInterval(() => {
-                if (document.hidden) return; // Berhenti produksi jika tab tidak aktif agar hemat baterai
-                
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Variasi bentuk, posisi horizontal acak, kecepatan gulir acak
-                particle.innerText = shapes[Math.floor(Math.random() * shapes.length)];
-                particle.style.left = Math.random() * 100 + 'vw';
-                
-                const duration = Math.random() * 6 + 6; // Antara 6 s.d 12 detik (sangat pelan & tenang)
-                particle.style.animationDuration = duration + 's';
-                
-                const size = Math.random() * 12 + 10; // Ukuran bervariasi kecil agar elegan
-                particle.style.fontSize = size + 'px';
-                
-                particleContainer.appendChild(particle);
-                
-                // Hapus elemen secara berkala agar memori browser bersih
-                setTimeout(() => {
-                    particle.remove();
-                }, duration * 1000);
-            }, 600); // Muncul setiap 0.6 detik
-        }
-
-        // DETEKSI SCROLL UNTUK EFEK BLUR HALUS
         function handleScrollAnimation() {
             var pages = document.querySelectorAll('.album-page');
             var triggerBottom = window.innerHeight * 0.85;

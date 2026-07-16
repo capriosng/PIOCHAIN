@@ -6,7 +6,7 @@
     <title>Cerita Perjalanan Romantis Kami</title>
     <style>
         /* ==========================================
-           1. PENGATURAN DASAR & FONT
+           1. PENGATURAN DASAR & FONT (OPTIMIZED)
            ========================================== */
         * {
             margin: 0;
@@ -24,6 +24,8 @@
             background-color: #030b1e; /* Navy blue gelap */
             color: #e2f0fd;
             overflow-x: hidden;
+            /* Mengaktifkan akselerasi gulir yang mulus pada perangkat iOS/Android */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* ==========================================
@@ -72,17 +74,14 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Efek Paralaks */
+            /* DIUBAH: Menghapus 'fixed' untuk melenyapkan patah-patah saat scroll di mobile */
+            background-attachment: scroll; 
             scroll-snap-align: start;
             scroll-snap-stop: always;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            /* Menghubungkan scroll timeline untuk animasi transisi halus */
-            view-timeline-name: --section;
-            view-timeline-axis: block;
         }
 
         /* Cover Utama Penuh Satu Halaman */
@@ -104,7 +103,7 @@
             padding: 20px;
         }
 
-        /* Kotak Teks Efek Kaca Biru (Blue Glassmorphism) + Animasi Scroll */
+        /* Kotak Teks Efek Kaca Biru (Blue Glassmorphism) */
         .content-box {
             background: rgba(10, 25, 47, 0.55);
             backdrop-filter: blur(14px) brightness(95%);
@@ -116,10 +115,23 @@
             text-align: center;
             box-shadow: 0 20px 50px rgba(2, 12, 27, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             
-            /* === ANIMASI INTERAKTIF PERGANTIAN HALAMAN === */
-            animation: scrollReveal linear both;
-            animation-timeline: --section;
-            animation-range: entry 10% cover 40%;
+            /* STATE AWAL: Tersembunyi, buram, dan bergeser ke bawah */
+            opacity: 0;
+            filter: blur(20px);
+            transform: translateY(40px) scale(0.95);
+            
+            /* Transisi super halus dengan akselerasi GPU */
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
+                        filter 1s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, filter, transform; /* Memaksa optimasi GPU */
+        }
+
+        /* STATE AKTIF: Ketika halaman masuk ke layar, efek blur menghilang dengan anggun */
+        .content-box.visible {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0) scale(1);
         }
 
         /* Judul Perjalanan Besar */
@@ -182,22 +194,6 @@
             text-transform: uppercase;
             color: rgba(173, 216, 230, 0.4);
         }
-
-        /* ==========================================
-           4. TIMELINE ANIMASI BLUR HALUS (SCROLL REVEAL)
-           ========================================== */
-        @keyframes scrollReveal {
-            from {
-                opacity: 0;
-                transform: translateY(60px) scale(0.95);
-                filter: blur(15px); /* Efek blur tebal saat tersembunyi */
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0px); /* Menjadi jernih sempurna saat berada di tengah layar */
-            }
-        }
     </style>
 </head>
 <body>
@@ -211,8 +207,8 @@
     <!-- Halaman Pembuka / Hero (Judul Besar 1 Halaman Lengkap) -->
     <section class="page-section hero-section" id="hero">
         <div class="blur-overlay">
-            <!-- Kotak ini dikecualikan dari animasi gulir agar langsung terbaca di awal -->
-            <div class="content-box" style="animation: none;">
+            <!-- Kotak pembuka langsung diberi class 'visible' agar langsung tampil tanpa menunggu scroll -->
+            <div class="content-box visible">
                 <h1>Di Bawah Langit Malam yang Sama:<br>Cerita Piooo & Chainnnn</h1>
                 <p class="caption">Dari tatapan pertama menuju langkah dan petualangan bersama.</p>
                 <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
@@ -322,7 +318,7 @@
     </section>
 
     <!-- ==========================================
-       5. JAVASCRIPT KONTROL JELAJAHI & MUSIK
+       4. JAVASCRIPT KONTROL JELAJAHI & MUSIK
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");
@@ -330,10 +326,7 @@
 
         // Fungsi pemicu saat tombol "Jelajahi" ditekan
         function startJourney() {
-            // 1. Putar Musik Otomatis
             playAudio();
-            
-            // 2. Gulir layar halus langsung menuju foto pertama
             document.getElementById("first-photo").scrollIntoView({ 
                 behavior: "smooth" 
             });
@@ -355,6 +348,39 @@
             btn.innerHTML = "🎵 Putar Musik";
             btn.classList.remove("playing");
         }
+
+        // ==========================================
+        // 5. INTERSECTION OBSERVER (SMOOTH TRANSITION)
+        // ==========================================
+        // Solusi super ringan pengganti Scroll-Driven CSS demi kenyamanan performa gulir
+        const observerOptions = {
+            root: null,
+            threshold: 0.25, // Memicu transisi ketika 25% area halaman sudah masuk layar
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const box = entry.target.querySelector('.content-box');
+                if (!box) return;
+
+                if (entry.isIntersecting) {
+                    box.classList.add('visible');
+                } else {
+                    // Kotak akan otomatis meredup & blur kembali saat ditinggalkan,
+                    // sehingga transisi masuk berikutnya tetap terasa dramatis.
+                    box.classList.remove('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Daftarkan semua halaman cerita untuk diawasi transisinya
+        document.querySelectorAll('.page-section').forEach(section => {
+            // Kecualikan halaman hero pembuka agar tidak berkedip di awal
+            if (section.id !== 'hero') {
+                observer.observe(section);
+            }
+        });
     </script>
 </body>
 </html>

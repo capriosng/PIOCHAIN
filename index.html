@@ -1177,32 +1177,34 @@
 
 
 
-        function startJourney() {
+      function startJourney() {
+    hero.style.opacity = "0";
+    hero.style.transform = "scale(0.97)";
+    
+    // Pastikan audio siap diputar
+    myAudio.load(); 
+    
+    // Gunakan promise untuk menangkap kegagalan autoplay
+    var playPromise = myAudio.play();
 
-            hero.style.opacity = "0";
-
-            hero.style.transform = "scale(0.97)";
-
-            
-
-            setTimeout(function() {
-
-                hero.remove(); 
-
-                album.classList.add('active');
-
-                document.documentElement.classList.add('unlocked');
-
-                
-
-                myAudio.play().catch(err => console.log("Audio ready."));
-
-                handleScrollAnimation();
-
-            }, 700);
-
-        }
-
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Autoplay berhasil!
+            console.log("Audio berhasil diputar.");
+        })
+        .catch(error => {
+            // Autoplay gagal. Mungkin pengguna harus berinteraksi lagi.
+            console.log("Autoplay dicegat oleh browser:", error);
+            // Anda bisa menampilkan tombol "Play Musik" jika gagal di sini
+        });
+    }
+    
+    setTimeout(function() {
+        hero.remove(); 
+        album.classList.add('active');
+        document.documentElement.classList.add('unlocked');
+    }, 700);
+}
 
 
         function createSakuraWind() {

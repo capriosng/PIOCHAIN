@@ -4,21 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kisah Perjalanan Romantis</title>
+    <!-- Meload Font Premium dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
         /* ==========================================
-           1. PENGATURAN DASAR & FONT
+           1. RESET & VARIABEL WARNA ELEGAN
            ========================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Georgia', serif;
+        }
+
+        :root {
+            --bg-album: #f7f3ed;      /* Warna dasar kertas linen hangat */
+            --bg-card: #ffffff;       /* Putih bersih kartu polaroid */
+            --text-main: #2c241e;     /* Hitam arang hangat */
+            --text-muted: #9e8e7f;    /* Emas pudar/cokelat muda untuk detail */
+            --border-color: #e6dfd5;  /* Garis pembatas tipis elegan */
         }
 
         html {
-            overflow: hidden; /* Kunci scroll di awal */
+            overflow: hidden;
             scroll-behavior: smooth;
-            background-color: #f4ede4; /* Warna kertas album hangat */
+            background-color: var(--bg-album);
         }
 
         html.unlocked {
@@ -26,43 +38,49 @@
         }
 
         body {
-            color: #333;
+            color: var(--text-main);
+            font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
-            background-color: #f4ede4;
-            padding-bottom: 80px;
+            background-color: var(--bg-album);
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ==========================================
-           2. TOMBOL MUSIK FLOATING
+           2. TOMBOL MUSIK MINIMALIS & FLOATING
            ========================================== */
         .audio-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 30px;
+            right: 30px;
             z-index: 1000;
         }
 
         #musicBtn {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            color: #4a3f35;
-            border: 1px solid #c2b5a3;
-            padding: 10px 20px;
-            border-radius: 30px;
+            font-family: 'Work Sans', sans-serif;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        #musicBtn.playing {
-            background: #e6dfd5;
-            border-color: #bdae9c;
+        #musicBtn:hover {
+            background: var(--bg-card);
+            border-color: var(--text-muted);
+            letter-spacing: 3px;
         }
 
         /* ==========================================
-           3. HALAMAN PEMBUKA (FOTO 1 - HERO FULL SCREEN)
+           3. FOTO 1 - HERO SCREEN (MEMUDAR HALUS)
            ========================================== */
         .hero-section {
             height: 100vh;
@@ -70,147 +88,193 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* FOTO 1: Menjadi latar belakang halaman pembuka */
-            background: linear-gradient(rgba(244, 237, 228, 0.65), rgba(244, 237, 228, 0.65)), url('foto1.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(247, 243, 237, 0.7), rgba(247, 243, 237, 0.7)), url('foto1.jpg') no-repeat center center/cover;
             text-align: center;
-            padding: 20px;
-            transition: opacity 0.5s ease; /* Animasi halus saat menghilang */
+            padding: 30px;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .hero-box {
-            max-width: 650px;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 40px;
-            border-radius: 4px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 60px 40px;
+            border-radius: 2px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 50px rgba(44, 36, 30, 0.04);
         }
 
         .hero-box h1 {
-            font-size: 2.3rem;
-            font-weight: normal;
-            margin-bottom: 15px;
-            color: #2c2520;
-            letter-spacing: 1px;
-            line-height: 1.3;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            line-height: 1.2;
         }
 
         .hero-box p {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: #554a42;
-            margin-bottom: 30px;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
         }
 
         .explore-btn {
-            background: #4a3f35;
+            font-family: 'Work Sans', sans-serif;
+            background: var(--text-main);
             color: #fff;
             border: none;
-            padding: 14px 40px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            padding: 16px 45px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            border-radius: 4px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: background 0.3s;
+            transition: all 0.3s;
         }
 
         .explore-btn:hover {
-            background: #605347;
+            background: #45382f;
+            box-shadow: 0 10px 25px rgba(44, 36, 30, 0.15);
         }
 
         /* ==========================================
-           4. ALBUM BUKU FOTO (FOTO 2 - FOTO 11)
+           4. LAYOUT PREMIUM PER HALAMAN LAYAR
            ========================================== */
         .album-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: none; /* Sembunyikan sebelum klik Jelajahi */
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
         }
 
         .album-container.active {
             display: block;
+            opacity: 1;
         }
 
-        /* Layout sepasang halaman album (Kiri & Kanan) */
         .album-page {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            background: #faf6f0;
-            padding: 40px;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #eadecc;
-            margin-bottom: 40px;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: var(--bg-album);
+            position: relative;
         }
 
-        /* Kotak Bingkai Foto Mandiri */
+        /* Garis pemisah estetis bergaya editorial majalah */
+        .album-page::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+        }
+
+        /* Bingkai Foto Seni / Fine Art Frame */
         .photo-card {
-            background: #fff;
-            padding: 16px 16px 28px 16px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
-            border: 1px solid #eedecb;
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 580px;
+            padding: 30px 30px 45px 30px;
+            box-shadow: 0 15px 45px rgba(44, 36, 30, 0.05);
+            border: 1px solid rgba(230, 223, 213, 0.6);
             text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .photo-card:hover {
-            transform: translateY(-4px);
+        /* Animasi muncul otomatis saat halaman di-scroll mendekat */
+        .album-page.visible .photo-card {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         .photo-card img {
             width: 100%;
-            height: 300px;
+            height: 400px;
             object-fit: cover;
             display: block;
-            background-color: #eaeaea;
-            border: 1px solid #f0f0f0;
+            filter: sepia(8%) contrast(102%); /* Sentuhan warna hangat sinematik */
+            border: 1px solid rgba(0,0,0,0.02);
         }
 
-        /* Teks Cerita Romantis di Bawah Foto */
-        .story-text {
-            margin-top: 16px;
-            font-size: 0.95rem;
-            color: #4a3f35;
-            line-height: 1.6;
-            font-style: italic;
-            padding: 0 10px;
-        }
-
+        /* Detail Nomor Halaman */
         .photo-number {
+            font-family: 'Work Sans', sans-serif;
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #bdae9c;
-            margin-bottom: 8px;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
         }
 
-        .album-footer {
-            text-align: center;
-            margin-top: 60px;
+        /* Teks Kisah Utama */
+        .story-text {
+            margin-top: 30px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        /* Hiasan Titik Estetik di Bawah Teks */
+        .story-text::after {
+            content: "✦";
+            display: block;
             font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #8c7e6f;
+            color: var(--text-muted);
+            margin-top: 15px;
+            opacity: 0.5;
         }
 
-        /* Responsive untuk HP (Menjadi 1 Kolom Vertikal) */
+        /* Bagian Kaki Album */
+        .album-footer {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg-album);
+            text-align: center;
+            padding: 80px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Responsive untuk Handphone */
         @media (max-width: 768px) {
             .album-page {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                padding: 20px;
+                height: auto;
+                min-height: 100vh;
+                padding: 80px 20px;
+            }
+            .hero-box {
+                padding: 40px 20px;
+            }
+            .hero-box h1 {
+                font-size: 2.1rem;
+            }
+            .photo-card {
+                padding: 20px 20px 30px 20px;
             }
             .photo-card img {
-                height: 240px;
+                height: 300px;
+            }
+            .story-text {
+                font-size: 1.15rem;
+                padding: 0 5px;
             }
         }
     </style>
@@ -219,134 +283,140 @@
 
     <!-- Musik Latar Kontrol -->
     <div class="audio-container">
-        <button id="musicBtn" onclick="toggleMusic()">🎵 Putar Musik</button>
+        <button id="musicBtn" onclick="toggleMusic()">🎵 PLAY MUSIC</button>
         <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
     </div>
 
-    <!-- HALAMAN PEMBUKA (FOTO 1: Akan Hilang Total saat Klik Jelajahi) -->
+    <!-- HALAMAN PEMBUKA (FOTO 1: Elegan Minimalis) -->
     <section class="hero-section" id="hero">
         <div class="hero-box">
             <h1>Kisah Perjalanan Romantis</h1>
             <p>Setiap lembar foto menyimpan detak waktu saat dunia kita mulai menyatu.</p>
-            <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
+            <button class="explore-btn" onclick="startJourney()">Jelajahi Cerita</button>
         </div>
     </section>
 
-    <!-- KONTENER UTAMA ALBUM FOTO (HANYA FOTO & KISAH YANG TERSISA) -->
+    <!-- KONTENER UTAMA ALBUM FOTO (1 HALAMAN LAYAR = 1 FOTO & KISAH ELEGAN) -->
     <div class="album-container" id="albumView">
 
-        <!-- LEMBARAN 1: FOTO 2 & FOTO 3 -->
-        <div class="album-page">
-            <!-- Foto 2 -->
+        <!-- HALAMAN 1 (TOTAL FOTO 2) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori II</span>
+                    <span class="photo-number">— Lembar Pertama —</span>
                     <img src="foto2.jpg" alt="Pertemuan Pertama">
                 </div>
                 <div class="story-text">"Semuanya dimulai dari pertemuan yang tak pernah diduga. Hari di mana semesta mempertemukan tatap mata kita untuk pertama kali."</div>
             </div>
-            
-            <!-- Foto 3 -->
+        </section>
+
+        <!-- HALAMAN 2 (TOTAL FOTO 3) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori III</span>
+                    <span class="photo-number">— Lembar Kedua —</span>
                     <img src="foto3.jpg" alt="Senyuman Canggung">
                 </div>
                 <div class="story-text">"Senyuman canggung darimu waktu itu diam-diam mencuri seluruh perhatianku, membuat hari biasa terasa sangat istimewa."</div>
             </div>
-        </div>
+        </section>
 
-        <!-- LEMBARAN 2: FOTO 4 & FOTO 5 -->
-        <div class="album-page">
-            <!-- Foto 4 -->
+        <!-- HALAMAN 3 (TOTAL FOTO 4) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori IV</span>
+                    <span class="photo-number">— Lembar Ketiga —</span>
                     <img src="foto4.jpg" alt="Mulai Chatting">
                 </div>
                 <div class="story-text">"Lewat deretan pesan di setiap malam, kita mulai saling bertukar cerita. Menyadari ada kenyamanan baru yang pelan-pelan tumbuh."</div>
             </div>
-            
-            <!-- Foto 5 -->
+        </section>
+
+        <!-- HALAMAN 4 (TOTAL FOTO 5) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori V</span>
+                    <span class="photo-number">— Lembar Keempat —</span>
                     <img src="foto5.jpg" alt="Memutuskan Bertemu">
                 </div>
                 <div class="story-text">"Hari di mana keberanian membimbing kita untuk melangkah keluar dari balik layar handphone, merencanakan pertemuan berdua."</div>
             </div>
-        </div>
+        </section>
 
-        <!-- LEMBARAN 3: FOTO 6 & FOTO 7 -->
-        <div class="album-page">
-            <!-- Foto 6 -->
+        <!-- HALAMAN 5 (TOTAL FOTO 6) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori VI</span>
+                    <span class="photo-number">— Lembar Kelima —</span>
                     <img src="foto6.jpg" alt="Kencan Pertama">
                 </div>
                 <div class="story-text">"Kencan pertama kita dipenuhi tawa lepas tanpa beban. Waktu seolah berputar begitu cepat saat aku berada di dekatmu."</div>
             </div>
-            
-            <!-- Foto 7 -->
+        </section>
+
+        <!-- HALAMAN 6 (TOTAL FOTO 7) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori VII</span>
+                    <span class="photo-number">— Lembar Keenam —</span>
                     <img src="foto7.jpg" alt="Satu Frekuensi">
                 </div>
                 <div class="story-text">"Di momen inilah kita sadar, kita berjalan di atas satu frekuensi yang sama. Menemukan rumah di dalam diri satu sama lain."</div>
             </div>
-        </div>
+        </section>
 
-        <!-- LEMBARAN 4: FOTO 8 & FOTO 9 -->
-        <div class="album-page">
-            <!-- Foto 8 -->
+        <!-- HALAMAN 7 (TOTAL FOTO 8) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori VIII</span>
+                    <span class="photo-number">— Lembar Ketujuh —</span>
                     <img src="foto8.jpg" alt="Tempat Bersandar">
                 </div>
                 <div class="story-text">"Bukan sekadar tentang bersenang-senang, kamu hadir menjadi sandaran paling teduh di kala dunia luar terasa melelahkan."</div>
             </div>
-            
-            <!-- Foto 9 -->
+        </section>
+
+        <!-- HALAMAN 8 (TOTAL FOTO 9) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori IX</span>
+                    <span class="photo-number">— Lembar Kedelapan —</span>
                     <img src="foto9.jpg" alt="Petualangan Baru">
                 </div>
                 <div class="story-text">"Langkah awal untuk memulai petualangan baru berdua. Menjelajahi tempat-tempat baru dan menimbun memori indah bersama."</div>
             </div>
-        </div>
+        </section>
 
-        <!-- LEMBARAN 5: FOTO 10 & FOTO 11 -->
-        <div class="album-page">
-            <!-- Foto 10 -->
+        <!-- HALAMAN 9 (TOTAL FOTO 10) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori X</span>
+                    <span class="photo-number">— Lembar Kesembilan —</span>
                     <img src="foto10.jpg" alt="Mengunci Komitmen">
                 </div>
                 <div class="story-text">"Mengunci komitmen dan janji suci di hati masing-masing, siap menghadapi hari esok dengan saling menggenggam erat."</div>
             </div>
-            
-            <!-- Foto 11 -->
+        </section>
+
+        <!-- HALAMAN 10 (TOTAL FOTO 11) -->
+        <section class="album-page">
             <div class="photo-card">
                 <div>
-                    <span class="photo-number">Memori XI</span>
+                    <span class="photo-number">— Lembar Terakhir —</span>
                     <img src="foto11.jpg" alt="Masa Depan">
                 </div>
                 <div class="story-text">"Makan malam privat yang manis, merayakan perjalanan indah yang sudah kita lalui sembari menatap cerahnya masa depan kita berdua."</div>
             </div>
-        </div>
+        </section>
 
+        <!-- BAGIAN PENUTUP TERAKHIR -->
         <div class="album-footer">
-            Dibuat untuk Mengenang Awal Cerita Kita
+            Dibuat dengan Seluruh Jiwa & Cinta
         </div>
     </div>
 
     <!-- ==========================================
-       5. JAVASCRIPT LOGIK HILANGKAN HERO SECTION
+       5. JAVASCRIPT ANIMASI & INTERAKSI
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");
@@ -355,20 +425,22 @@
         var hero = document.getElementById("hero");
 
         function startJourney() {
-            // 1. Hilangkan elemen judul awal (Hero Section) secara total dari dokumen
+            // Animasi memudar halus untuk Hero Section
             hero.style.opacity = "0";
+            hero.style.transform = "scale(0.98)";
+            
             setTimeout(function() {
                 hero.remove(); 
                 
-                // 2. Aktifkan dan munculkan Container Album setelah Hero dihapus
+                // Tampilkan Kontainer Album
                 album.classList.add('active');
-                
-                // 3. Buka kunci scroll halaman
                 document.documentElement.classList.add('unlocked');
                 
-                // 4. Putar musik secara otomatis
                 playAudio();
-            }, 400); // Sinkronisasi jeda transisi memudar (0.4 detik)
+                
+                // Memicu pengecekan animasi untuk halaman pertama langsung aktif
+                handleScrollAnimation();
+            }, 600);
         }
 
         function toggleMusic() {
@@ -377,16 +449,29 @@
 
         function playAudio() {
             myAudio.play().then(() => {
-                btn.innerHTML = "⏸️ Jeda Musik";
-                btn.classList.add("playing");
-            }).catch(err => console.log("Menunggu interaksi awal."));
+                btn.innerHTML = "⏸️ PAUSE MUSIC";
+            }).catch(err => console.log("Menunggu interaksi pengguna pertama."));
         }
 
         function pauseAudio() {
             myAudio.pause();
-            btn.innerHTML = "🎵 Putar Musik";
-            btn.classList.remove("playing");
+            btn.innerHTML = "🎵 PLAY MUSIC";
         }
+
+        // Fungsi Deteksi Scroll untuk Efek Fade-In Polaroid yang Indah
+        function handleScrollAnimation() {
+            var pages = document.querySelectorAll('.album-page');
+            var triggerBottom = window.innerHeight * 0.85;
+
+            pages.forEach(page => {
+                var pageTop = page.getBoundingClientRect().top;
+                if (pageTop < triggerBottom) {
+                    page.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimation);
     </script>
 </body>
 </html>

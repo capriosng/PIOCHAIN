@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisah Perjalanan Romantis Piooo & Chainnnn</title>
+    <title>Kisah Perjalanan Romantis</title>
     <style>
         /* ==========================================
-           1. PENGATURAN DASAR & FONT (LOCKED BY DEFAULT)
+           1. PENGATURAN DASAR & FONT
            ========================================== */
         * {
             margin: 0;
@@ -59,7 +59,6 @@
         #musicBtn.playing {
             background: #e6dfd5;
             border-color: #bdae9c;
-            box-shadow: 0 0 10px rgba(74, 63, 53, 0.2);
         }
 
         /* ==========================================
@@ -75,6 +74,7 @@
             background: linear-gradient(rgba(244, 237, 228, 0.65), rgba(244, 237, 228, 0.65)), url('foto1.jpg') no-repeat center center/cover;
             text-align: center;
             padding: 20px;
+            transition: opacity 0.5s ease; /* Animasi halus saat menghilang */
         }
 
         .hero-box {
@@ -122,28 +122,17 @@
         }
 
         /* ==========================================
-           4. ALBUM BUKU FOTO (GRID LAYOUT FOTO 2 - FOTO 11)
+           4. ALBUM BUKU FOTO (FOTO 2 - FOTO 11)
            ========================================== */
         .album-container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 40px 20px;
             display: none; /* Sembunyikan sebelum klik Jelajahi */
         }
 
         .album-container.active {
             display: block;
-        }
-
-        .album-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 50px;
-            color: #2c2520;
-            font-weight: normal;
-            border-bottom: 1px solid #dcd3c7;
-            padding-bottom: 20px;
-            letter-spacing: 1px;
         }
 
         /* Layout sepasang halaman album (Kiri & Kanan) */
@@ -156,10 +145,10 @@
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid #eadecc;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
-        /* Kotak Bingkai Foto Polaroid Mandiri */
+        /* Kotak Bingkai Foto Mandiri */
         .photo-card {
             background: #fff;
             padding: 16px 16px 28px 16px;
@@ -178,14 +167,14 @@
 
         .photo-card img {
             width: 100%;
-            height: 280px;
+            height: 300px;
             object-fit: cover;
             display: block;
             background-color: #eaeaea;
             border: 1px solid #f0f0f0;
         }
 
-        /* Teks Cerita Romantis di Bawah/Samping Foto */
+        /* Teks Cerita Romantis di Bawah Foto */
         .story-text {
             margin-top: 16px;
             font-size: 0.95rem;
@@ -223,9 +212,6 @@
             .photo-card img {
                 height: 240px;
             }
-            .hero-box h1 {
-                font-size: 1.8rem;
-            }
         }
     </style>
 </head>
@@ -237,18 +223,17 @@
         <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
     </div>
 
-    <!-- HALAMAN PEMBUKA (FOTO 1: Latar Belakang Utama) -->
+    <!-- HALAMAN PEMBUKA (FOTO 1: Akan Hilang Total saat Klik Jelajahi) -->
     <section class="hero-section" id="hero">
         <div class="hero-box">
-            <h1>Di Bawah Langit Malam yang Sama:<br>Cerita Piooo & Chainnnn</h1>
+            <h1>Kisah Perjalanan Romantis</h1>
             <p>Setiap lembar foto menyimpan detak waktu saat dunia kita mulai menyatu.</p>
             <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
         </div>
     </section>
 
-    <!-- KONTENER UTAMA ALBUM FOTO (FOTO 2 LENGKAP SAMPAI FOTO 11) -->
+    <!-- KONTENER UTAMA ALBUM FOTO (HANYA FOTO & KISAH YANG TERSISA) -->
     <div class="album-container" id="albumView">
-        <h2 class="album-title">Lembaran Cerita Awal Pertemuan Kita</h2>
 
         <!-- LEMBARAN 1: FOTO 2 & FOTO 3 -->
         <div class="album-page">
@@ -356,32 +341,34 @@
         </div>
 
         <div class="album-footer">
-            Dibuat dengan seluruh ♡ untuk Piooo & Chainnnn
+            Dibuat untuk Mengenang Awal Cerita Kita
         </div>
     </div>
 
     <!-- ==========================================
-       5. JAVASCRIPT KONTROL LOGIK HALAMAN
+       5. JAVASCRIPT LOGIK HILANGKAN HERO SECTION
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");
         var btn = document.getElementById("musicBtn");
         var album = document.getElementById("albumView");
+        var hero = document.getElementById("hero");
 
         function startJourney() {
-            // 1. Membuka status scroll di HTML
-            document.documentElement.classList.add('unlocked');
-            
-            // 2. Memunculkan Grid Album Foto
-            album.classList.add('active');
-            
-            // 3. Putar Musik otomatis
-            playAudio();
-            
-            // 4. Arahkan pandangan bergulir dengan halus ke judul album foto
-            album.scrollIntoView({ 
-                behavior: "smooth" 
-            });
+            // 1. Hilangkan elemen judul awal (Hero Section) secara total dari dokumen
+            hero.style.opacity = "0";
+            setTimeout(function() {
+                hero.remove(); 
+                
+                // 2. Aktifkan dan munculkan Container Album setelah Hero dihapus
+                album.classList.add('active');
+                
+                // 3. Buka kunci scroll halaman
+                document.documentElement.classList.add('unlocked');
+                
+                // 4. Putar musik secara otomatis
+                playAudio();
+            }, 400); // Sinkronisasi jeda transisi memudar (0.4 detik)
         }
 
         function toggleMusic() {
@@ -392,7 +379,7 @@
             myAudio.play().then(() => {
                 btn.innerHTML = "⏸️ Jeda Musik";
                 btn.classList.add("playing");
-            }).catch(err => console.log("Menunggu interaksi awal pengguna."));
+            }).catch(err => console.log("Menunggu interaksi awal."));
         }
 
         function pauseAudio() {

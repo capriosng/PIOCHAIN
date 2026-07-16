@@ -6,7 +6,7 @@
     <title>Cerita Perjalanan Romantis Kami</title>
     <style>
         /* ==========================================
-           1. PENGATURAN DASAR & FONT (OPTIMIZED)
+           1. PENGATURAN DASAR & FONT (SCROLL LOCKED BY DEFAULT)
            ========================================== */
         * {
             margin: 0;
@@ -16,15 +16,21 @@
         }
 
         html {
-            scroll-snap-type: y mandatory;
+            /* Kunci scroll di awal sebelum tombol Jelajahi ditekan */
+            overflow: hidden; 
             scroll-behavior: smooth;
+        }
+
+        /* Saat kelas 'unlocked' ditambahkan ke HTML, aktifkan scroll snap dan buka kunci scroll */
+        html.unlocked {
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
         }
 
         body {
             background-color: #030b1e; /* Navy blue gelap */
             color: #e2f0fd;
             overflow-x: hidden;
-            /* Mengaktifkan akselerasi gulir yang mulus pada perangkat iOS/Android */
             -webkit-overflow-scrolling: touch;
         }
 
@@ -74,7 +80,6 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* DIUBAH: Menghapus 'fixed' untuk melenyapkan patah-patah saat scroll di mobile */
             background-attachment: scroll; 
             scroll-snap-align: start;
             scroll-snap-stop: always;
@@ -326,7 +331,13 @@
 
         // Fungsi pemicu saat tombol "Jelajahi" ditekan
         function startJourney() {
+            // 1. Membuka kunci scroll halaman
+            document.documentElement.classList.add('unlocked');
+            
+            // 2. Putar Musik Otomatis
             playAudio();
+            
+            // 3. Gulir layar halus langsung menuju foto pertama
             document.getElementById("first-photo").scrollIntoView({ 
                 behavior: "smooth" 
             });
@@ -352,7 +363,6 @@
         // ==========================================
         // 5. INTERSECTION OBSERVER (SMOOTH TRANSITION)
         // ==========================================
-        // Solusi super ringan pengganti Scroll-Driven CSS demi kenyamanan performa gulir
         const observerOptions = {
             root: null,
             threshold: 0.25, // Memicu transisi ketika 25% area halaman sudah masuk layar
@@ -367,16 +377,12 @@
                 if (entry.isIntersecting) {
                     box.classList.add('visible');
                 } else {
-                    // Kotak akan otomatis meredup & blur kembali saat ditinggalkan,
-                    // sehingga transisi masuk berikutnya tetap terasa dramatis.
                     box.classList.remove('visible');
                 }
             });
         }, observerOptions);
 
-        // Daftarkan semua halaman cerita untuk diawasi transisinya
         document.querySelectorAll('.page-section').forEach(section => {
-            // Kecualikan halaman hero pembuka agar tidak berkedip di awal
             if (section.id !== 'hero') {
                 observer.observe(section);
             }

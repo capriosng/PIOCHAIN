@@ -20,11 +20,11 @@
         }
 
         :root {
-            --bg-album: #f7f3ed;      /* Warna dasar kertas linen hangat */
-            --bg-card: #ffffff;       /* Putih bersih kartu polaroid */
-            --text-main: #2c241e;     /* Hitam arang hangat */
-            --text-muted: #9e8e7f;    /* Emas pudar/cokelat muda untuk detail */
-            --border-color: #e6dfd5;  /* Garis pembatas tipis elegan */
+            --bg-album: #f6f1eb;      /* Kertas mewah hangat */
+            --bg-card: #ffffff;       /* Putih bersih galeri */
+            --text-main: #2a221b;     /* Hitam kopi hangat */
+            --text-muted: #a3917f;    /* Cokelat emas pudar */
+            --border-color: #e8dfd3;  /* Batas kertas */
         }
 
         html {
@@ -46,7 +46,42 @@
         }
 
         /* ==========================================
-           2. FOTO 1 - HERO SCREEN (MEMUDAR HALUS)
+           2. EFEK AMBIENCE CINTA (PARTIKEL LEMBUT)
+           ========================================== */
+        #heart-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Supaya tidak mengganggu klik/scroll */
+            z-index: 50;
+            overflow: hidden;
+            display: none;
+        }
+
+        .particle {
+            position: absolute;
+            color: rgba(194, 155, 133, 0.25); /* Warna kelopak rose gold transparan */
+            font-size: 14px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% {
+                transform: translateY(105vh) rotate(360deg) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* ==========================================
+           3. FOTO 1 - HERO SCREEN
            ========================================== */
         .hero-section {
             height: 100vh;
@@ -54,9 +89,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(247, 243, 237, 0.7), rgba(247, 243, 237, 0.7)), url('foto1.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(246, 241, 235, 0.65), rgba(246, 241, 235, 0.65)), url('foto1.jpg') no-repeat center center/cover;
             text-align: center;
             padding: 30px;
+            z-index: 100;
+            position: relative;
             transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -68,7 +105,7 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 50px rgba(44, 36, 30, 0.04);
+            box-shadow: 0 20px 50px rgba(44, 36, 30, 0.03);
         }
 
         .hero-box h1 {
@@ -107,7 +144,7 @@
         }
 
         /* ==========================================
-           3. LAYOUT ELEGAN PER HALAMAN LAYAR & BLUR
+           4. LAYOUT PER LAYAR & BINGKAI FOTO ELEGAN
            ========================================== */
         .album-container {
             display: none;
@@ -131,43 +168,59 @@
             position: relative;
         }
 
-        /* Garis pemisah estetis antar lembaran */
+        /* Garis batas pembatas buku bergaya majalah */
         .album-page::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 10%;
-            width: 80%;
+            left: 15%;
+            width: 70%;
             height: 1px;
             background: linear-gradient(to right, transparent, var(--border-color), transparent);
         }
 
-        /* Fine Art Polaroid Frame + Efek Blur saat Scroll */
+        /* BINGKAI FOTO FINE-ART / PREMIUM GALLERY FRAME */
         .photo-card {
             background: var(--bg-card);
             width: 100%;
             max-width: 580px;
-            padding: 30px 30px 45px 30px;
-            box-shadow: 0 15px 45px rgba(44, 36, 30, 0.04);
-            border: 1px solid rgba(230, 223, 213, 0.6);
+            padding: 24px 24px 45px 24px;
+            
+            /* Double Border Style (Kemewahan Klasik) */
+            border: 1px solid rgba(163, 145, 127, 0.3);
+            outline: 12px solid var(--bg-card);
+            outline-offset: -24px;
+            
+            /* Bayangan Lembut Seni Kedalaman */
+            box-shadow: 0 30px 70px rgba(44, 36, 30, 0.08), 
+                        0 10px 20px rgba(0, 0, 0, 0.02);
+            
             text-align: center;
             display: flex;
             flex-direction: column;
             
-            /* Konfigurasi Awal Efek Blur dan Transisi Halus */
+            /* Konfigurasi Awal Efek Blur & Transisi Halus */
             opacity: 0;
-            filter: blur(15px);
-            transform: translateY(40px) scale(0.97);
-            transition: opacity 1.2s cubic-bezier(0.215, 0.610, 0.355, 1), 
-                        filter 1.2s cubic-bezier(0.215, 0.610, 0.355, 1), 
-                        transform 1.2s cubic-bezier(0.215, 0.610, 0.355, 1);
+            filter: blur(20px);
+            transform: translateY(50px) scale(0.96);
+            transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Ketika Halaman Di-scroll Masuk Layar (Efek Blur Menghilang Sempurna) */
+        /* Trigger ketika halaman di-scroll mendekat */
         .album-page.visible .photo-card {
             opacity: 1;
             filter: blur(0px);
             transform: translateY(0) scale(1);
+        }
+
+        /* Frame Foto Dalam */
+        .image-wrapper {
+            position: relative;
+            padding: 12px;
+            background: #fafaf9;
+            border: 1px solid #f0eae1;
         }
 
         .photo-card img {
@@ -175,75 +228,72 @@
             height: 400px;
             object-fit: cover;
             display: block;
-            filter: sepia(6%) contrast(101%);
-            border: 1px solid rgba(0,0,0,0.01);
+            filter: sepia(4%) contrast(101%);
         }
 
-        /* Detail Nomor Lembar */
+        /* Nomor Lembar */
         .photo-number {
             font-family: 'Work Sans', sans-serif;
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            margin-top: 10px;
         }
 
-        /* Teks Kisah Romantis */
+        /* Teks Kisah */
         .story-text {
-            margin-top: 30px;
+            margin-top: 35px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             font-weight: 400;
             font-style: italic;
             color: var(--text-main);
-            line-height: 1.6;
-            padding: 0 20px;
+            line-height: 1.65;
+            padding: 0 25px;
         }
 
+        /* Dekorasi Simbol Cinta Minimalis di Akhir Cerita */
         .story-text::after {
-            content: "✦";
+            content: "❦";
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
-            margin-top: 15px;
-            opacity: 0.4;
+            margin-top: 20px;
+            opacity: 0.5;
         }
 
-        /* Bagian Penutup Terakhir */
+        /* Penutup */
         .album-footer {
             font-family: 'Work Sans', sans-serif;
             background: var(--bg-album);
             text-align: center;
-            padding: 100px 20px;
+            padding: 120px 20px;
             font-size: 0.75rem;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--text-muted);
         }
 
-        /* Responsive Ponsel Pintar */
+        /* Responsive Ponsel */
         @media (max-width: 768px) {
             .album-page {
                 height: auto;
                 min-height: 100vh;
                 padding: 80px 20px;
             }
-            .hero-box {
-                padding: 40px 20px;
-            }
-            .hero-box h1 {
-                font-size: 2.1rem;
-            }
             .photo-card {
-                padding: 20px 20px 30px 20px;
+                padding: 16px 16px 35px 16px;
+                outline: 8px solid var(--bg-card);
+                outline-offset: -16px;
             }
             .photo-card img {
                 height: 300px;
             }
             .story-text {
-                font-size: 1.15rem;
+                font-size: 1.2rem;
                 padding: 0 5px;
             }
         }
@@ -251,7 +301,10 @@
 </head>
 <body>
 
-    <!-- Musik Latar Otomatis Belakang Layar (Tanpa Tombol) -->
+    <!-- Wadah Efek Cinta (Kelopak/Hati Berjatuhan Transparan) -->
+    <div id="heart-particles"></div>
+
+    <!-- Musik Latar Otomatis Belakang Layar -->
     <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
 
     <!-- HALAMAN PEMBUKA -->
@@ -271,7 +324,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Pertama —</span>
-                    <img src="foto2.jpg" alt="Pertemuan Pertama">
+                    <div class="image-wrapper">
+                        <img src="foto2.jpg" alt="Pertemuan Pertama">
+                    </div>
                 </div>
                 <div class="story-text">"Semuanya dimulai dari pertemuan yang tak pernah diduga. Hari di mana semesta mempertemukan tatap mata kita untuk pertama kali."</div>
             </div>
@@ -282,7 +337,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Kedua —</span>
-                    <img src="foto3.jpg" alt="Senyuman Canggung">
+                    <div class="image-wrapper">
+                        <img src="foto3.jpg" alt="Senyuman Canggung">
+                    </div>
                 </div>
                 <div class="story-text">"Senyuman canggung darimu waktu itu diam-diam mencuri seluruh perhatianku, membuat hari biasa terasa sangat istimewa."</div>
             </div>
@@ -293,7 +350,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Ketiga —</span>
-                    <img src="foto4.jpg" alt="Mulai Chatting">
+                    <div class="image-wrapper">
+                        <img src="foto4.jpg" alt="Mulai Chatting">
+                    </div>
                 </div>
                 <div class="story-text">"Lewat deretan pesan di setiap malam, kita mulai saling bertukar cerita. Menyadari ada kenyamanan baru yang pelan-pelan tumbuh."</div>
             </div>
@@ -304,7 +363,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Keempat —</span>
-                    <img src="foto5.jpg" alt="Memutuskan Bertemu">
+                    <div class="image-wrapper">
+                        <img src="foto5.jpg" alt="Memutuskan Bertemu">
+                    </div>
                 </div>
                 <div class="story-text">"Hari di mana keberanian membimbing kita untuk melangkah keluar dari balik layar handphone, merencanakan pertemuan berdua."</div>
             </div>
@@ -315,7 +376,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Kelima —</span>
-                    <img src="foto6.jpg" alt="Kencan Pertama">
+                    <div class="image-wrapper">
+                        <img src="foto6.jpg" alt="Kencan Pertama">
+                    </div>
                 </div>
                 <div class="story-text">"Kencan pertama kita dipenuhi tawa lepas tanpa beban. Waktu seolah berputar begitu cepat saat aku berada di dekatmu."</div>
             </div>
@@ -326,7 +389,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Keenam —</span>
-                    <img src="foto7.jpg" alt="Satu Frekuensi">
+                    <div class="image-wrapper">
+                        <img src="foto7.jpg" alt="Satu Frekuensi">
+                    </div>
                 </div>
                 <div class="story-text">"Di momen inilah kita sadar, kita berjalan di atas satu frekuensi yang sama. Menemukan rumah di dalam diri satu sama lain."</div>
             </div>
@@ -337,7 +402,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Ketujuh —</span>
-                    <img src="foto8.jpg" alt="Tempat Bersandar">
+                    <div class="image-wrapper">
+                        <img src="foto8.jpg" alt="Tempat Bersandar">
+                    </div>
                 </div>
                 <div class="story-text">"Bukan sekadar tentang bersenang-senang, kamu hadir menjadi sandaran paling teduh di kala dunia luar terasa melelahkan."</div>
             </div>
@@ -348,7 +415,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Kedelapan —</span>
-                    <img src="foto9.jpg" alt="Petualangan Baru">
+                    <div class="image-wrapper">
+                        <img src="foto9.jpg" alt="Petualangan Baru">
+                    </div>
                 </div>
                 <div class="story-text">"Langkah awal untuk memulai petualangan baru berdua. Menjelajahi tempat-tempat baru dan menimbun memori indah bersama."</div>
             </div>
@@ -359,7 +428,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Kesembilan —</span>
-                    <img src="foto10.jpg" alt="Mengunci Komitmen">
+                    <div class="image-wrapper">
+                        <img src="foto10.jpg" alt="Mengunci Komitmen">
+                    </div>
                 </div>
                 <div class="story-text">"Mengunci komitmen dan janji suci di hati masing-masing, siap menghadapi hari esok dengan saling menggenggam erat."</div>
             </div>
@@ -370,7 +441,9 @@
             <div class="photo-card">
                 <div>
                     <span class="photo-number">— Lembar Terakhir —</span>
-                    <img src="foto11.jpg" alt="Masa Depan">
+                    <div class="image-wrapper">
+                        <img src="foto11.jpg" alt="Masa Depan">
+                    </div>
                 </div>
                 <div class="story-text">"Makan malam privat yang manis, merayakan perjalanan indah yang sudah kita lalui sembari menatap cerahnya masa depan kita berdua."</div>
             </div>
@@ -383,12 +456,13 @@
     </div>
 
     <!-- ==========================================
-       4. JAVASCRIPT ANIMASI BLUR & LOGIK SCROLL
+       5. JAVASCRIPT ANIMASI & EFEK CINTA
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");
         var album = document.getElementById("albumView");
         var hero = document.getElementById("hero");
+        var particleContainer = document.getElementById("heart-particles");
 
         function startJourney() {
             // Animasi memudar halus untuk Hero Section
@@ -398,32 +472,57 @@
             setTimeout(function() {
                 hero.remove(); 
                 
-                // Tampilkan Kontainer Album
+                // Tampilkan Album & Aktifkan Efek Partikel Cinta
                 album.classList.add('active');
+                particleContainer.style.display = "block";
                 document.documentElement.classList.add('unlocked');
                 
-                // Memutar musik di latar belakang secara otomatis
-                myAudio.play().catch(err => console.log("Musik diputar di latar belakang."));
+                // Musik Otomatis Latar Belakang
+                myAudio.play().catch(err => console.log("Musik berjalan aktif."));
                 
-                // Jalankan fungsi deteksi posisi awal dokumen
+                createParticles(); // Mulai memproduksi efek kelopak cinta
                 handleScrollAnimation();
             }, 700);
         }
 
-        // FUNGSI UTAMA: Deteksi Scroll dengan Transisi Efek Blur Menghilang
+        // GENERATOR EFEK CINTA (Kelopak Bunga / Simbol Hati Mengambang Lembut)
+        function createParticles() {
+            const shapes = ['🌸', '♥', '❀', '♡'];
+            setInterval(() => {
+                if (document.hidden) return; // Berhenti produksi jika tab tidak aktif agar hemat baterai
+                
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Variasi bentuk, posisi horizontal acak, kecepatan gulir acak
+                particle.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                
+                const duration = Math.random() * 6 + 6; // Antara 6 s.d 12 detik (sangat pelan & tenang)
+                particle.style.animationDuration = duration + 's';
+                
+                const size = Math.random() * 12 + 10; // Ukuran bervariasi kecil agar elegan
+                particle.style.fontSize = size + 'px';
+                
+                particleContainer.appendChild(particle);
+                
+                // Hapus elemen secara berkala agar memori browser bersih
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }, 600); // Muncul setiap 0.6 detik
+        }
+
+        // DETEKSI SCROLL UNTUK EFEK BLUR HALUS
         function handleScrollAnimation() {
             var pages = document.querySelectorAll('.album-page');
-            
-            // Trigger diaktifkan sedikit lebih lambat (85% tinggi layar) agar efek transisi terasa sinematik
             var triggerBottom = window.innerHeight * 0.85;
 
             pages.forEach(page => {
                 var pageTop = page.getBoundingClientRect().top;
-                
                 if (pageTop < triggerBottom) {
                     page.classList.add('visible');
                 } else {
-                    // Opsional: Hapus class jika ingin efek blur aktif kembali saat di-scroll ke atas
                     page.classList.remove('visible');
                 }
             });

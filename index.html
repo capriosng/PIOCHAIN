@@ -15,8 +15,9 @@
             color: #ffffff;
             font-family: 'Cormorant Garamond', serif;
             overflow-x: hidden;
-            /* BACKGROUND IMAGE BARU */
-            background-image: url('background.jpg'); 
+            
+            /* --- KODE BACKGROUND ANDA --- */
+            background-image: url('background.jpg'); /* GANTI DENGAN NAMA FILE FOTO ANDA */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -25,7 +26,7 @@
             background-blend-mode: multiply;
         }
 
-        /* --- SEMUA ELEMEN ASLI ANDA --- */
+        /* --- KODE ASLI ANDA TETAP ADA DI SINI --- */
         .starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .hero-section { height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; padding: 30px; z-index: 100; position: relative; }
         .hero-box { max-width: 650px; background: rgba(14, 10, 22, 0.7); padding: 55px 40px; border-radius: 6px; backdrop-filter: blur(15px); text-align: center; }
@@ -58,14 +59,14 @@
                 <div class="story-text">"Semuanya dimulai dari pertemuan yang tak pernah diduga."</div>
             </div>
         </section>
-    </div>
+        </div>
 
     <script>
         function startJourney() {
             document.getElementById("hero").style.display = "none";
             document.getElementById("albumView").classList.add('active');
             document.documentElement.classList.add('unlocked');
-            document.getElementById("bgMusic").play().catch(e => console.log("Audio ready"));
+            document.getElementById("bgMusic").play().catch(e => console.log("Audio siap"));
         }
     </script>
 </body>

@@ -3,39 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cerita Perjalanan Romantis Kami</title>
+    <title>Kisah Perjalanan Romantis Piooo & Chainnnn</title>
     <style>
         /* ==========================================
-           1. PENGATURAN DASAR & FONT (SCROLL LOCKED BY DEFAULT)
+           1. PENGATURAN DASAR & FONT (LOCKED BY DEFAULT)
            ========================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Georgia, serif;
+            font-family: 'Georgia', serif;
         }
 
         html {
-            /* Kunci scroll di awal sebelum tombol Jelajahi ditekan */
-            overflow: hidden; 
+            overflow: hidden; /* Kunci scroll di awal */
             scroll-behavior: smooth;
+            background-color: #f4ede4; /* Warna kertas album hangat */
         }
 
-        /* Saat kelas 'unlocked' ditambahkan ke HTML, aktifkan scroll snap dan buka kunci scroll */
         html.unlocked {
             overflow-y: scroll;
-            scroll-snap-type: y mandatory;
         }
 
         body {
-            background-color: #030b1e; /* Navy blue gelap */
-            color: #e2f0fd;
+            color: #333;
             overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
+            background-color: #f4ede4;
+            padding-bottom: 80px;
         }
 
         /* ==========================================
-           2. TOMBOL MUSIK FLOATING (KANAN ATAS)
+           2. TOMBOL MUSIK FLOATING
            ========================================== */
         .audio-container {
             position: fixed;
@@ -45,300 +43,343 @@
         }
 
         #musicBtn {
-            background: rgba(10, 34, 64, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: #cbdff7;
-            border: 1px solid rgba(135, 206, 250, 0.25);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: #4a3f35;
+            border: 1px solid #c2b5a3;
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 0.85rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-        }
-
-        #musicBtn:hover {
-            background: rgba(135, 206, 250, 0.2);
-            color: #fff;
-            border-color: rgba(135, 206, 250, 0.5);
-            transform: scale(1.05);
         }
 
         #musicBtn.playing {
-            background: rgba(41, 128, 185, 0.6);
-            border-color: rgba(52, 152, 219, 0.8);
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            background: #e6dfd5;
+            border-color: #bdae9c;
+            box-shadow: 0 0 10px rgba(74, 63, 53, 0.2);
         }
 
         /* ==========================================
-           3. STRUKTUR HALAMAN UTAMA (FULL SCREEN)
+           3. HALAMAN PEMBUKA (FOTO 1 - HERO FULL SCREEN)
            ========================================== */
-        .page-section {
+        .hero-section {
             height: 100vh;
             width: 100vw;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: scroll; 
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        /* Cover Utama Penuh Satu Halaman */
-        .hero-section {
-            background: linear-gradient(rgba(3, 11, 30, 0.5), rgba(3, 11, 30, 0.5)), url('hero-bg.jpg') no-repeat center center/cover;
-        }
-
-        /* Lapisan Tapis Biru Malam */
-        .blur-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(3, 15, 41, 0.3), rgba(2, 8, 24, 0.6));
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            /* FOTO 1: Menjadi latar belakang halaman pembuka */
+            background: linear-gradient(rgba(244, 237, 228, 0.65), rgba(244, 237, 228, 0.65)), url('foto1.jpg') no-repeat center center/cover;
+            text-align: center;
             padding: 20px;
         }
 
-        /* Kotak Teks Efek Kaca Biru (Blue Glassmorphism) */
-        .content-box {
-            background: rgba(10, 25, 47, 0.55);
-            backdrop-filter: blur(14px) brightness(95%);
-            -webkit-backdrop-filter: blur(14px) brightness(95%);
-            border: 1px solid rgba(100, 180, 255, 0.2);
-            padding: 40px 50px;
-            border-radius: 20px;
-            max-width: 680px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(2, 12, 27, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            
-            /* STATE AWAL: Tersembunyi, buram, dan bergeser ke bawah */
-            opacity: 0;
-            filter: blur(20px);
-            transform: translateY(40px) scale(0.95);
-            
-            /* Transisi super halus dengan akselerasi GPU */
-            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
-                        filter 1s cubic-bezier(0.25, 1, 0.5, 1), 
-                        transform 1s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, filter, transform; /* Memaksa optimasi GPU */
+        .hero-box {
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 40px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
-        /* STATE AKTIF: Ketika halaman masuk ke layar, efek blur menghilang dengan anggun */
-        .content-box.visible {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0) scale(1);
-        }
-
-        /* Judul Perjalanan Besar */
-        .content-box h1 {
-            font-size: 2.8rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        .hero-box h1 {
+            font-size: 2.3rem;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: #2c2520;
+            letter-spacing: 1px;
             line-height: 1.3;
         }
 
-        .chapter-tag {
-            display: inline-block;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #e5c158; /* Aksen Emas Bintang */
-            margin-bottom: 15px;
-            font-weight: 600;
+        .hero-box p {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #554a42;
+            margin-bottom: 30px;
         }
 
-        .caption {
-            font-size: 1.25rem;
-            line-height: 1.7;
-            font-weight: 400;
-            color: #d1e2f4;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Tombol Utama Jelajahi */
         .explore-btn {
-            margin-top: 25px;
-            background: #e5c158;
-            color: #030b1e;
+            background: #4a3f35;
+            color: #fff;
             border: none;
-            padding: 12px 35px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
+            padding: 14px 40px;
+            font-size: 0.9rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(229, 193, 88, 0.3);
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: background 0.3s;
         }
 
         .explore-btn:hover {
-            background: #fff;
-            color: #030b1e;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+            background: #605347;
         }
 
-        .mini-footer {
-            margin-top: 30px;
+        /* ==========================================
+           4. ALBUM BUKU FOTO (GRID LAYOUT FOTO 2 - FOTO 11)
+           ========================================== */
+        .album-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: none; /* Sembunyikan sebelum klik Jelajahi */
+        }
+
+        .album-container.active {
+            display: block;
+        }
+
+        .album-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: #2c2520;
+            font-weight: normal;
+            border-bottom: 1px solid #dcd3c7;
+            padding-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Layout sepasang halaman album (Kiri & Kanan) */
+        .album-page {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: #faf6f0;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eadecc;
+            margin-bottom: 50px;
+        }
+
+        /* Kotak Bingkai Foto Polaroid Mandiri */
+        .photo-card {
+            background: #fff;
+            padding: 16px 16px 28px 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+            border: 1px solid #eedecb;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            background-color: #eaeaea;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Teks Cerita Romantis di Bawah/Samping Foto */
+        .story-text {
+            margin-top: 16px;
+            font-size: 0.95rem;
+            color: #4a3f35;
+            line-height: 1.6;
+            font-style: italic;
+            padding: 0 10px;
+        }
+
+        .photo-number {
+            display: block;
             font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #bdae9c;
+            margin-bottom: 8px;
+        }
+
+        .album-footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(173, 216, 230, 0.4);
+            color: #8c7e6f;
+        }
+
+        /* Responsive untuk HP (Menjadi 1 Kolom Vertikal) */
+        @media (max-width: 768px) {
+            .album-page {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+            .photo-card img {
+                height: 240px;
+            }
+            .hero-box h1 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Musik Latar Kontrol (Floating) -->
+    <!-- Musik Latar Kontrol -->
     <div class="audio-container">
         <button id="musicBtn" onclick="toggleMusic()">🎵 Putar Musik</button>
         <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
     </div>
 
-    <!-- Halaman Pembuka / Hero (Judul Besar 1 Halaman Lengkap) -->
-    <section class="page-section hero-section" id="hero">
-        <div class="blur-overlay">
-            <!-- Kotak pembuka langsung diberi class 'visible' agar langsung tampil tanpa menunggu scroll -->
-            <div class="content-box visible">
-                <h1>Di Bawah Langit Malam yang Sama:<br>Cerita Piooo & Chainnnn</h1>
-                <p class="caption">Dari tatapan pertama menuju langkah dan petualangan bersama.</p>
-                <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
-            </div>
+    <!-- HALAMAN PEMBUKA (FOTO 1: Latar Belakang Utama) -->
+    <section class="hero-section" id="hero">
+        <div class="hero-box">
+            <h1>Di Bawah Langit Malam yang Sama:<br>Cerita Piooo & Chainnnn</h1>
+            <p>Setiap lembar foto menyimpan detak waktu saat dunia kita mulai menyatu.</p>
+            <button class="explore-btn" onclick="startJourney()">Jelajahi</button>
         </div>
     </section>
 
-    <!-- Halaman 1: Pertemuan Pertama -->
-    <section class="page-section" id="first-photo" style="background-image: url('foto1.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak I: Hari Di Mana Semua Dimulai</span>
-                <p class="caption">Tempat pertama kali kita saling bertukar sapa dan tersenyum malu.</p>
-            </div>
-        </div>
-    </section>
+    <!-- KONTENER UTAMA ALBUM FOTO (FOTO 2 LENGKAP SAMPAI FOTO 11) -->
+    <div class="album-container" id="albumView">
+        <h2 class="album-title">Lembaran Cerita Awal Pertemuan Kita</h2>
 
-    <!-- Halaman 2: Kencan Pertama -->
-    <section class="page-section" style="background-image: url('foto2.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak I: Hari Di Mana Semua Dimulai</span>
-                <p class="caption">Kencan pertama kita yang penuh dengan tawa canggung namun membekas.</p>
+        <!-- LEMBARAN 1: FOTO 2 & FOTO 3 -->
+        <div class="album-page">
+            <!-- Foto 2 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori II</span>
+                    <img src="foto2.jpg" alt="Pertemuan Pertama">
+                </div>
+                <div class="story-text">"Semuanya dimulai dari pertemuan yang tak pernah diduga. Hari di mana semesta mempertemukan tatap mata kita untuk pertama kali."</div>
+            </div>
+            
+            <!-- Foto 3 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori III</span>
+                    <img src="foto3.jpg" alt="Senyuman Canggung">
+                </div>
+                <div class="story-text">"Senyuman canggung darimu waktu itu diam-diam mencuri seluruh perhatianku, membuat hari biasa terasa sangat istimewa."</div>
             </div>
         </div>
-    </section>
 
-    <!-- Halaman 3: Frekuensi Sama -->
-    <section class="page-section" style="background-image: url('foto3.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak I: Hari Di Mana Semua Dimulai</span>
-                <p class="caption">Saat kita menyadari ada frekuensi yang sama dan kenyamanan yang nyata.</p>
+        <!-- LEMBARAN 2: FOTO 4 & FOTO 5 -->
+        <div class="album-page">
+            <!-- Foto 4 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori IV</span>
+                    <img src="foto4.jpg" alt="Mulai Chatting">
+                </div>
+                <div class="story-text">"Lewat deretan pesan di setiap malam, kita mulai saling bertukar cerita. Menyadari ada kenyamanan baru yang pelan-pelan tumbuh."</div>
+            </div>
+            
+            <!-- Foto 5 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori V</span>
+                    <img src="foto5.jpg" alt="Memutuskan Bertemu">
+                </div>
+                <div class="story-text">"Hari di mana keberanian membimbing kita untuk melangkah keluar dari balik layar handphone, merencanakan pertemuan berdua."</div>
             </div>
         </div>
-    </section>
 
-    <!-- Halaman 4: Menikmati Senja -->
-    <section class="page-section" style="background-image: url('foto4.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak II: Rumah dalam Diri Satu Sama Lain</span>
-                <p class="caption">Menikmati senja bersama, momen sederhana yang selalu jadi favorit kita.</p>
+        <!-- LEMBARAN 3: FOTO 6 & FOTO 7 -->
+        <div class="album-page">
+            <!-- Foto 6 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori VI</span>
+                    <img src="foto6.jpg" alt="Kencan Pertama">
+                </div>
+                <div class="story-text">"Kencan pertama kita dipenuhi tawa lepas tanpa beban. Waktu seolah berputar begitu cepat saat aku berada di dekatmu."</div>
+            </div>
+            
+            <!-- Foto 7 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori VII</span>
+                    <img src="foto7.jpg" alt="Satu Frekuensi">
+                </div>
+                <div class="story-text">"Di momen inilah kita sadar, kita berjalan di atas satu frekuensi yang sama. Menemukan rumah di dalam diri satu sama lain."</div>
             </div>
         </div>
-    </section>
 
-    <!-- Halaman 5: Hari Jadi -->
-    <section class="page-section" style="background-image: url('foto5.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak II: Rumah dalam Diri Satu Sama Lain</span>
-                <p class="caption">Merayakan hari jadi dengan kejutan kecil yang manis dan penuh arti.</p>
+        <!-- LEMBARAN 4: FOTO 8 & FOTO 9 -->
+        <div class="album-page">
+            <!-- Foto 8 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori VIII</span>
+                    <img src="foto8.jpg" alt="Tempat Bersandar">
+                </div>
+                <div class="story-text">"Bukan sekadar tentang bersenang-senang, kamu hadir menjadi sandaran paling teduh di kala dunia luar terasa melelahkan."</div>
+            </div>
+            
+            <!-- Foto 9 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori IX</span>
+                    <img src="foto9.jpg" alt="Petualangan Baru">
+                </div>
+                <div class="story-text">"Langkah awal untuk memulai petualangan baru berdua. Menjelajahi tempat-tempat baru dan menimbun memori indah bersama."</div>
             </div>
         </div>
-    </section>
 
-    <!-- Halaman 6: Saling Mendukung -->
-    <section class="page-section" style="background-image: url('foto6.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak II: Rumah dalam Diri Satu Sama Lain</span>
-                <p class="caption">Menjadi tim terbaik yang selalu mendukung mimpi besar masing-masing.</p>
+        <!-- LEMBARAN 5: FOTO 10 & FOTO 11 -->
+        <div class="album-page">
+            <!-- Foto 10 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori X</span>
+                    <img src="foto10.jpg" alt="Mengunci Komitmen">
+                </div>
+                <div class="story-text">"Mengunci komitmen dan janji suci di hati masing-masing, siap menghadapi hari esok dengan saling menggenggam erat."</div>
+            </div>
+            
+            <!-- Foto 11 -->
+            <div class="photo-card">
+                <div>
+                    <span class="photo-number">Memori XI</span>
+                    <img src="foto11.jpg" alt="Masa Depan">
+                </div>
+                <div class="story-text">"Makan malam privat yang manis, merayakan perjalanan indah yang sudah kita lalui sembari menatap cerahnya masa depan kita berdua."</div>
             </div>
         </div>
-    </section>
 
-    <!-- Halaman 7: Tiket di Tangan -->
-    <section class="page-section" style="background-image: url('foto7.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak III: Petualangan Romantis di Ubud</span>
-                <p class="caption">Tiket di tangan, siap mengunci komitmen lewat petualangan berdua.</p>
-            </div>
+        <div class="album-footer">
+            Dibuat dengan seluruh ♡ untuk Piooo & Chainnnn
         </div>
-    </section>
-
-    <!-- Halaman 8: Vila Impian -->
-    <section class="page-section" style="background-image: url('foto8.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak III: Petualangan Romantis di Ubud</span>
-                <p class="caption">Vila impian dengan kolam renang pribadi menghadap hutan rimbun nan tenang.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Halaman 9: Bukit Campuhan -->
-    <section class="page-section" style="background-image: url('foto9.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Babak III: Petualangan Romantis di Ubud</span>
-                <p class="caption">Gandengan tangan menyusuri bukit Campuhan yang hijau dan berangin sejuk.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Halaman 10: Makan Malam & Penutup -->
-    <section class="page-section" style="background-image: url('foto10.jpg');">
-        <div class="blur-overlay">
-            <div class="content-box">
-                <span class="chapter-tag">Masa Depan Kita</span>
-                <p class="caption">Makan malam privat di bawah taburan bintang untuk merayakan selamanya.</p>
-                <footer class="mini-footer">Dibuat dengan ♡ untuk kita</footer>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <!-- ==========================================
-       4. JAVASCRIPT KONTROL JELAJAHI & MUSIK
+       5. JAVASCRIPT KONTROL LOGIK HALAMAN
        ========================================== -->
     <script>
         var myAudio = document.getElementById("bgMusic");
         var btn = document.getElementById("musicBtn");
+        var album = document.getElementById("albumView");
 
-        // Fungsi pemicu saat tombol "Jelajahi" ditekan
         function startJourney() {
-            // 1. Membuka kunci scroll halaman
+            // 1. Membuka status scroll di HTML
             document.documentElement.classList.add('unlocked');
             
-            // 2. Putar Musik Otomatis
+            // 2. Memunculkan Grid Album Foto
+            album.classList.add('active');
+            
+            // 3. Putar Musik otomatis
             playAudio();
             
-            // 3. Gulir layar halus langsung menuju foto pertama
-            document.getElementById("first-photo").scrollIntoView({ 
+            // 4. Arahkan pandangan bergulir dengan halus ke judul album foto
+            album.scrollIntoView({ 
                 behavior: "smooth" 
             });
         }
@@ -351,7 +392,7 @@
             myAudio.play().then(() => {
                 btn.innerHTML = "⏸️ Jeda Musik";
                 btn.classList.add("playing");
-            }).catch(err => console.log("Menunggu interaksi pengguna untuk memutar audio."));
+            }).catch(err => console.log("Menunggu interaksi awal pengguna."));
         }
 
         function pauseAudio() {
@@ -359,34 +400,6 @@
             btn.innerHTML = "🎵 Putar Musik";
             btn.classList.remove("playing");
         }
-
-        // ==========================================
-        // 5. INTERSECTION OBSERVER (SMOOTH TRANSITION)
-        // ==========================================
-        const observerOptions = {
-            root: null,
-            threshold: 0.25, // Memicu transisi ketika 25% area halaman sudah masuk layar
-            rootMargin: "0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const box = entry.target.querySelector('.content-box');
-                if (!box) return;
-
-                if (entry.isIntersecting) {
-                    box.classList.add('visible');
-                } else {
-                    box.classList.remove('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.page-section').forEach(section => {
-            if (section.id !== 'hero') {
-                observer.observe(section);
-            }
-        });
     </script>
 </body>
 </html>

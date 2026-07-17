@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kisah Perjalanan Kita</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:wght@400,700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -12,52 +12,57 @@
             color: #f4e8d3; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; min-height: 100vh; 
         }
 
-        /* Elemen Langit */
+        /* --- Elemen Langit & Pohon (Tetap) --- */
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0.7; }
         .shooting-star { position: absolute; width: 2px; height: 2px; background: white; box-shadow: 0 0 10px white; z-index: 1; animation: shoot linear infinite; }
         @keyframes shoot { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(500px, 500px); opacity: 0; } }
         .moon { position: fixed; top: 10%; right: 15%; width: 140px; height: 140px; background: #fffdf5; border-radius: 50%; box-shadow: 0 0 60px #fff9e0; z-index: 1; }
         
-        /* Pohon & Ayunan */
         .tree-container { position: fixed; bottom: 0; left: 0; width: 40vw; height: 80vh; z-index: 2; pointer-events: none; }
         .trunk { position: absolute; bottom: 0; left: 10%; width: 80px; height: 60%; background: #2a2538; border-right: 5px solid #3d3655; clip-path: polygon(30% 0%, 65% 0%, 100% 100%, 0% 100%); }
         .tree-swing { position: absolute; top: 10px; left: 220px; width: 40px; height: 250px; border-left: 3px solid #e0dcd5; border-right: 3px solid #e0dcd5; transform-origin: top center; animation: gentle-swing 6s ease-in-out infinite alternate; }
         @keyframes gentle-swing { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
 
-        /* Sakura */
+        /* --- BINGKAI FOTO ELEGAN (Perubahan Utama) --- */
+        .photo-card { 
+            width: 85%; max-width: 450px; margin: 120px auto; 
+            padding: 15px; /* Memberi ruang untuk bingkai */
+            /* Bingkai Elegan: Gradasi Emas/Soft Pink */
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border: 8px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px 20px 50px 20px;
+            /* Efek dekorasi bunga simpel menggunakan shadow */
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.3), 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            opacity: 0; transform: scale(0.95); transition: 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Dekorasi Sudut Bunga */
+        .photo-card::before {
+            content: '🌸'; position: absolute; top: -15px; left: -15px; font-size: 2rem;
+        }
+        .photo-card::after {
+            content: '🌸'; position: absolute; bottom: -15px; right: -15px; font-size: 2rem;
+        }
+
+        .photo-card.visible { opacity: 1; transform: scale(1); }
+        .photo-card img { 
+            width: 100%; height: 380px; object-fit: cover; 
+            border-radius: 40px 10px 40px 10px; 
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        .story-text { margin-top: 25px; font-size: 1.4rem; font-style: italic; text-align: center; color: #4a148c; line-height: 1.6; font-weight: 600; }
+        
+        /* --- Lain-lain --- */
         #sakura-particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
         .sakura { position: absolute; color: rgba(255, 200, 210, 0.9); animation: fall linear infinite; }
         @keyframes fall { 0% { top: -20px; opacity: 0; } 100% { top: 105vh; opacity: 1; } }
-
-        /* Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; position: relative; }
         .explore-btn { padding: 18px 40px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid #f4e8d3; border-radius: 50px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(5px); }
         .explore-btn:hover { background: #f4e8d3; color: #1e1a33; }
-
-        /* Album dengan Bingkai Dinamis */
         .album-container { display: none; padding: 100px 0; z-index: 60; position: relative; }
         .album-container.active { display: block; }
-        
-        .photo-card { 
-            width: 80%; max-width: 400px; margin: 100px auto; 
-            border-radius: 150px 30px 150px 30px; 
-            overflow: hidden; padding: 25px;
-            /* Animasi Warna Bingkai */
-            background: linear-gradient(45deg, #fdfbfb, #f0e6e6, #e6f0ed);
-            animation: colorShift 10s infinite alternate;
-            opacity: 0; transform: scale(0.9); transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        @keyframes colorShift { 
-            0% { background: linear-gradient(45deg, #fdfbfb, #f0e6e6); } 
-            50% { background: linear-gradient(45deg, #fdf6e6, #e6f0f0); }
-            100% { background: linear-gradient(45deg, #f0f0fd, #fdfbfb); }
-        }
-        
-        .photo-card.visible { opacity: 1; transform: scale(1); }
-        .photo-card img { width: 100%; height: 350px; object-fit: cover; border-radius: 120px 20px 120px 20px; }
-        .story-text { margin-top: 25px; font-size: 1.3rem; font-style: italic; text-align: center; color: #2d2a4a; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -76,7 +81,7 @@
 
     <div class="album-container" id="albumView">
         <script>
-            // Setup Bintang
+            // ... (Script bintang, sakura, dan logic scroll tetap sama seperti sebelumnya) ...
             for(let i=0; i<150; i++) {
                 let s = document.createElement('div');
                 s.className = 'star';

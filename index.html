@@ -7,27 +7,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0b0e14; color: #f4e8d3; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
+        body { background: radial-gradient(circle at 75% 25%, #2a1f3d 0%, #110d22 60%, #05040a 100%); color: #f4e8d3; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; min-height: 100vh; }
 
-        /* Bunga Sakura (z-index 50) */
+        /* Latar Belakang (Bulan, Bintang, Pohon) */
+        .starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #eee, transparent), radial-gradient(1.5px 1.5px at 40px 70px, #fff, transparent); opacity: 0.6; z-index: 0; pointer-events: none; }
+        .moon { position: fixed; top: 10%; right: 15%; width: 120px; height: 120px; background: #fff9f2; border-radius: 50%; box-shadow: 0 0 50px rgba(255, 249, 242, 0.5); z-index: 1; }
+        .tree-container { position: fixed; bottom: 0; left: 0; width: 40vw; height: 80vh; z-index: 2; pointer-events: none; }
+        .trunk { position: absolute; bottom: 0; left: 20%; width: 60px; height: 60%; background: #05030a; clip-path: polygon(30% 0%, 65% 0%, 100% 100%, 0% 100%); }
+
+        /* Bunga Sakura */
         #sakura-particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
         .sakura { position: absolute; color: rgba(255, 182, 193, 0.75); animation: fall linear infinite; }
         @keyframes fall { 0% { top: -20px; opacity: 0; } 100% { top: 105vh; opacity: 1; } }
 
         /* Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; position: relative; }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 20px; }
-        .explore-btn { 
-            padding: 15px 35px; background: transparent; color: white; border: 1px solid #f4e8d3; 
-            border-radius: 50px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px;
-        }
+        .explore-btn { padding: 15px 35px; background: transparent; color: white; border: 1px solid #f4e8d3; border-radius: 50px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; }
         .explore-btn:hover { background: #f4e8d3; color: #0b0e14; }
 
-        /* Album dengan desain organik */
-        .album-container { display: none; padding: 50px 0; z-index: 60; position: relative; }
+        /* Album Foto Organik */
+        .album-container { display: none; padding: 100px 0; z-index: 60; position: relative; }
         .album-container.active { display: block; }
-
-        .photo-card {
+        .photo-card { 
             width: 80%; max-width: 400px; margin: 100px auto; 
             border-radius: 150px 30px 150px 30px; 
             overflow: hidden; background: #1a1e26; padding: 20px;
@@ -35,20 +36,21 @@
             box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
         }
         .photo-card.visible { opacity: 1; transform: scale(1); }
-        .photo-card img { 
-            width: 100%; height: 350px; object-fit: cover; 
-            border-radius: 120px 20px 120px 20px; 
-        }
-        .story-text { margin-top: 20px; font-size: 1.5rem; font-style: italic; padding: 0 10px; text-align: center; }
+        .photo-card img { width: 100%; height: 350px; object-fit: cover; border-radius: 120px 20px 120px 20px; }
+        .story-text { margin-top: 20px; font-size: 1.5rem; font-style: italic; text-align: center; padding: 0 10px; }
     </style>
 </head>
 <body>
 
+    <div class="starry-sky"></div>
+    <div class="moon"></div>
+    <div class="tree-container"><div class="trunk"></div></div>
     <div id="sakura-particles"></div>
+
     <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
 
     <section class="hero" id="hero">
-        <h1>Perjalanan Kita</h1>
+        <h1 style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 20px;">Kisah Perjalanan Kita</h1>
         <button class="explore-btn" onclick="startJourney()">Mulai Membuka Kenangan</button>
     </section>
 
@@ -69,7 +71,8 @@
     <script>
         function startJourney() {
             document.getElementById("hero").style.display = "none";
-            document.getElementById("bgMusic").play().catch(()=>{});
+            // Musik akan otomatis play setelah tombol diklik
+            document.getElementById("bgMusic").play();
             document.getElementById("albumView").classList.add('active');
             window.addEventListener('scroll', () => {
                 document.querySelectorAll('.photo-card').forEach(card => {
@@ -78,7 +81,6 @@
             });
         }
 
-        // Fungsi Bunga Sakura
         function createSakura() {
             setInterval(() => {
                 const petal = document.createElement('div');

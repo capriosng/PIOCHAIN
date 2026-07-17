@@ -3,77 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisah Perjalanan Romantis - Sakura Malam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <title>Kisah Perjalanan Kita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { color: #ffffff; font-family: 'Cormorant Garamond', serif; background: radial-gradient(circle at 75% 25%, #2a1f3d 0%, #110d22 60%, #05040a 100%); background-attachment: fixed; overflow-x: hidden; }
-        
-        /* Langit & Bintang */
-        .starry-sky { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20px 30px, #eee, transparent), radial-gradient(1.5px 1.5px at 40px 70px, #fff, transparent); opacity: 0.6; z-index: 0; pointer-events: none; }
-        .moon { position: fixed; top: 10%; right: 15%; width: 150px; height: 150px; background: #fff9f2; border-radius: 50%; box-shadow: 0 0 50px rgba(255, 249, 242, 0.5); z-index: 1; pointer-events: none; }
-        
-        /* Pohon & Ayunan */
-        .tree-container { position: fixed; bottom: -2vh; left: -2vw; width: 45vw; height: 100vh; z-index: 2; pointer-events: none; }
-        .trunk { position: absolute; bottom: 0; left: 20%; width: 70px; height: 70%; background: linear-gradient(90deg, #05030a 0%, #0d091a 100%); clip-path: polygon(30% 0%, 65% 0%, 75% 25%, 60% 45%, 85% 70%, 100% 100%, 0% 100%, 15% 75%, 35% 50%, 20% 25%); animation: trunk-sway 6s ease-in-out infinite alternate; }
-        .tree-swing { position: absolute; top: 15px; left: 210px; width: 40px; height: 280px; border-left: 2px solid #05030a; border-right: 2px solid #05030a; transform-origin: top center; animation: gentle-swing 6s ease-in-out infinite alternate; }
-        @keyframes trunk-sway { 0% { transform: rotate(0deg); } 100% { transform: rotate(0.8deg); } }
-        @keyframes gentle-swing { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } }
+        body { background: #0b0e14; color: #f4e8d3; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
 
-        /* Partikel Sakura */
+        /* Bunga Sakura (z-index 50) */
         #sakura-particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
         .sakura { position: absolute; color: rgba(255, 182, 193, 0.75); animation: fall linear infinite; }
         @keyframes fall { 0% { top: -20px; opacity: 0; } 100% { top: 105vh; opacity: 1; } }
 
-        /* Hero & Album */
-        .hero-section { height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 100; position: relative; transition: opacity 0.8s; }
-        .hero-box { max-width: 650px; background: rgba(14, 10, 22, 0.7); padding: 55px; border-radius: 6px; text-align: center; backdrop-filter: blur(15px); }
-        .explore-btn { background: #fff9f2; color: #110d22; padding: 15px 40px; cursor: pointer; border: none; font-family: 'Work Sans', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .album-container { display: none; opacity: 0; transition: opacity 1s; z-index: 80; padding-bottom: 100px; }
-        .album-container.active { display: block; opacity: 1; }
-        .album-page { height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .photo-card { background: rgba(255, 255, 255, 0.94); color: #2a221b; width: 90%; max-width: 560px; padding: 24px; opacity: 0; transform: translateY(40px); transition: 1.2s; text-align: center; }
-        .photo-card.visible { opacity: 1; transform: translateY(0); }
-        .photo-card img { width: 100%; height: 380px; object-fit: cover; }
+        /* Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; position: relative; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 20px; }
+        .explore-btn { 
+            padding: 15px 35px; background: transparent; color: white; border: 1px solid #f4e8d3; 
+            border-radius: 50px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .explore-btn:hover { background: #f4e8d3; color: #0b0e14; }
+
+        /* Album dengan desain organik */
+        .album-container { display: none; padding: 50px 0; z-index: 60; position: relative; }
+        .album-container.active { display: block; }
+
+        .photo-card {
+            width: 80%; max-width: 400px; margin: 100px auto; 
+            border-radius: 150px 30px 150px 30px; 
+            overflow: hidden; background: #1a1e26; padding: 20px;
+            opacity: 0; transform: scale(0.9); transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+        }
+        .photo-card.visible { opacity: 1; transform: scale(1); }
+        .photo-card img { 
+            width: 100%; height: 350px; object-fit: cover; 
+            border-radius: 120px 20px 120px 20px; 
+        }
+        .story-text { margin-top: 20px; font-size: 1.5rem; font-style: italic; padding: 0 10px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="starry-sky"></div>
-    <div class="moon"></div>
-    <div class="tree-container">
-        <div class="trunk"><div class="tree-swing"></div></div>
-    </div>
     <div id="sakura-particles"></div>
-
     <audio id="bgMusic" src="musik-romantis.mp3" loop></audio>
 
-    <section class="hero-section" id="hero">
-        <div class="hero-box">
-            <h1>Kisah Perjalanan Romantis</h1>
-            <button class="explore-btn" onclick="startJourney()">Jelajahi Cerita</button>
-        </div>
+    <section class="hero" id="hero">
+        <h1>Perjalanan Kita</h1>
+        <button class="explore-btn" onclick="startJourney()">Mulai Membuka Kenangan</button>
     </section>
 
     <div class="album-container" id="albumView">
         <script>
-            const captions = [
-                "Pertemuan pertama yang tak diduga.", "Senyuman canggung yang mencuri perhatian.",
-                "Mulai saling bertukar cerita lewat pesan.", "Keberanian melangkah keluar dari balik layar.",
-                "Kencan pertama yang dipenuhi tawa.", "Satu frekuensi yang sama.",
-                "Tempat bersandar paling teduh.", "Petualangan baru berdua.",
-                "Mengunci komitmen dan janji.", "Masa depan indah bersama."
-            ];
+            const captions = ["Pertemuan pertama.", "Senyum manismu.", "Mulai berbagi cerita.", "Keberanian kita.", "Kencan perdana.", "Satu frekuensi.", "Tempat bersandar.", "Petualangan.", "Komitmen.", "Masa depan."];
             for (let i = 1; i <= 10; i++) {
                 document.write(`
-                    <section class="album-page">
-                        <div class="photo-card" id="card-${i}">
-                            <span class="photo-number">— Lembar Ke-${i} —</span>
-                            <img src="foto${11-i}.jpeg" alt="Foto">
-                            <div style="margin-top:20px; font-style:italic;">"${captions[i-1]}"</div>
-                        </div>
-                    </section>
+                    <div class="photo-card" id="card-${i}">
+                        <img src="foto${11-i}.jpeg" alt="Kenangan">
+                        <div class="story-text">"${captions[i-1]}"</div>
+                    </div>
                 `);
             }
         </script>
@@ -81,21 +68,17 @@
 
     <script>
         function startJourney() {
-            document.getElementById("hero").style.opacity = "0";
-            document.getElementById("bgMusic").play().catch(e => console.log("Perlu interaksi untuk musik"));
-            setTimeout(() => {
-                document.getElementById("hero").style.display = "none";
-                document.getElementById("albumView").classList.add('active');
-                window.addEventListener('scroll', checkVisibility);
-            }, 800);
-        }
-
-        function checkVisibility() {
-            document.querySelectorAll('.photo-card').forEach(card => {
-                if (card.getBoundingClientRect().top < window.innerHeight * 0.8) card.classList.add('visible');
+            document.getElementById("hero").style.display = "none";
+            document.getElementById("bgMusic").play().catch(()=>{});
+            document.getElementById("albumView").classList.add('active');
+            window.addEventListener('scroll', () => {
+                document.querySelectorAll('.photo-card').forEach(card => {
+                    if (card.getBoundingClientRect().top < window.innerHeight * 0.8) card.classList.add('visible');
+                });
             });
         }
 
+        // Fungsi Bunga Sakura
         function createSakura() {
             setInterval(() => {
                 const petal = document.createElement('div');
